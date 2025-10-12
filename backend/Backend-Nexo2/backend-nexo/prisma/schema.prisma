@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum UserStatus {
+  PENDING   // Estado inicial después del registro, esperando verificación por email
+  ACTIVE    // Cuenta verificada y lista para iniciar sesión
+  SUSPENDED // Cuenta bloqueada por moderación
+}
+
+// =================================================================
+// 2. Tablas de Autenticación y Usuarios
+// =================================================================
+
+model Role {
+  id           String        @id @default(uuid())
+  name         String        @unique // 'Emprendedor', 'Comprador', 'Admin'
+  // Relación 1:N: Un rol tiene muchas cuentas
+  userAccounts UserAccount[] 
+}
+
+model Person {
+  id          String       @id @default(uuid())
+  first_names String
+  last_names  String
+  email       String       @unique // Único y validado por @corhuila.edu.co
+  phone       String?
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+
+  userAccount UserAccount? // Relación 1:1
+}
+
+model UserAccount {
+  id              String   @id @default(uuid())
+  username        String   @unique
+  password_hash   String   
+  
+  // Usa el Enum y el estado inicial es PENDING
+  status          UserStatus @default(PENDING) 
+  
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  // Relaciones 1:1 y 1:N
+  person_id       String   @unique
+  person          Person   @relation(fields: [person_id], references: [id])
+  
+  role_id         String
+  role            Role     @relation(fields: [role_id], references: [id])
+  
+  // CLAVE CORREGIDA: Relación 1:N con Company
+  companies       Company[] // Lado "Uno": Una lista de empresas
+  
+  // Relación 1:1 con Token
+  verificationToken VerificationToken?
+}
+
+model Company {
+  id               String      @id @default(uuid())
+  name             String
+  description      String?
+  created_at       DateTime    @default(now())
+  updated_at       DateTime    @updatedAt
+
+  // Lado "Muchos": Clave Foránea sin @unique, permitiendo varios registros con el mismo ID de propietario
+  owner_account_id String
+  owner_account    UserAccount @relation(fields: [owner_account_id], references: [id])
+}
+
+// =================================================================
+// 3. Tabla para la Verificación por Token
+// =================================================================
+
+model VerificationToken {
+  id                String   @id @default(uuid())
+  token             String   // El código numérico de 6 dígitos
+  expires_at        DateTime 
+  created_at        DateTime @default(now())
+  
+  // FK a UserAccount (Relación 1:1 para un token activo por cuenta)
+  user_account_id   String   @unique
+  userAccount       UserAccount @relation(fields: [user_account_id], references: [id])
+}
