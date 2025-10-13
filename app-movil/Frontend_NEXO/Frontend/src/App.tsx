@@ -5,6 +5,7 @@ import './theme/variables.css';
 import Register from './pages/Register';
 import Token from './pages/Token';
 import Enter from './pages/Enter';
+import Login from './pages/Login';
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
       <Router>
         <Switch>
           <Route path="/enter" component={Enter} />   
+          <Route path="/login" component={Login} /> 
           <Route path="/register" component={Register} /> 
           <Route path="/token" component={Token} /> 
           <Route exact path="/">
