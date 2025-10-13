@@ -1,0 +1,44 @@
+
+.enter-logo {
+  position: absolute;
+  top: 130px; /* lo llevamos al centro vertical */
+  left: 50%; /* centro horizontal */
+  transform: translate(-50%, -50%); /* compensamos el ancho y alto */
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  color: white;
+  z-index: 2;
+}
+
+.enter-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+.enter-button {
+  width: 230px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: white;
+  color: #39d353;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 40px;
+  z-index: 2;
+}
+
+
+
+
