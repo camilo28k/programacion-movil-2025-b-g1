@@ -15,7 +15,9 @@ export class CreateAuthDto {
 
     @IsEmail()
     // 🔑 REGLA DE NEGOCIO: Dominio obligatorio
-    
+    @Matches(/@corhuila\.edu\.co$/, {
+    message: 'Solo se permiten correos con el dominio @corhuila.edu.co',
+  })
     @IsNotEmpty()
     email: string;
     

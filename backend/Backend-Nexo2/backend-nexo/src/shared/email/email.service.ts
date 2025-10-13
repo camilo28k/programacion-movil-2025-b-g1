@@ -28,7 +28,7 @@ export class EmailService {
           <h1>¡Bienvenido a Nexo Innovación!</h1>
           <p>Para activar tu cuenta, utiliza el siguiente código:</p>
           <h2 style="color: #007bff;"><b>${token}</b></h2>
-          <p>Este código es válido por 1 hora.</p>
+          <p>Este código es válido por 1 minuto.</p>
         `,
       };
 

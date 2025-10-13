@@ -1,10 +1,12 @@
-import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { VerifyTokenDto } from './dto/verify-token.dto';
 import { CreateAuthDto } from './dto/create-auth.dto'; // Asegúrate de que el DTO sea el correcto
 import { UserStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EmailService } from 'src/shared/email/email.service';
+import { JwtService } from '@nestjs/jwt';
+import { LoginAuthDto } from './dto/login-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +14,8 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private emailService: EmailService,
-  ) {}
+    private jwtService: JwtService,
+  ) { }
 
   // =================================================================
   // HELPER: Generador de Token (Privado del servicio)
@@ -33,7 +36,7 @@ export class AuthService {
 
     // 2. Validaciones y obtención de Role ID
     const role = await this.prisma.role.findUnique({ where: { name: createAuthDto.name_rol } });
-    
+
     if (!role) {
       throw new BadRequestException(`El rol '${createAuthDto.name_rol}' no es válido o no existe.`);
     }
@@ -69,17 +72,17 @@ export class AuthService {
           data: {
             token: token,
             user_account_id: userAccount.id,
-            expires_at: new Date(Date.now() + 3600000), // Válido por 1 hora
+            expires_at: new Date(Date.now() + 60000), // Válido por 1 minuto
           },
         });
-        
+
         return { userAccount };
       });
-      
+
       // 4. Envío de Correo (Fuera de la transacción de DB)
       await this.emailService.sendToken(createAuthDto.email, token);
 
-      return { 
+      return {
         message: `Registro exitoso. Se ha enviado el token de activación a ${createAuthDto.email}.`,
         username: result.userAccount.username
       };
@@ -94,52 +97,148 @@ export class AuthService {
   }
 
   // =================================================================
-  // MÉTODO 2: activateAccount (Verifica token y actualiza a ACTIVE)
-  // RUTA: POST /auth/confirm-token
+  // HU01: ACTIVACIÓN DE CUENTA (Usando Email)
   // =================================================================
   async activateAccount(verifyTokenDto: VerifyTokenDto) {
-    const { username, token } = verifyTokenDto;
+    const { email, token } = verifyTokenDto; // <-- Usamos email
 
-    // 1. Buscar la cuenta y verificar la COINCIDENCIA del token
-    const user = await this.prisma.userAccount.findUnique({
-      where: { username },
-      include: { 
-        verificationToken: {
-          where: { token: token, expires_at: { gt: new Date() } } 
+    // 1. Buscar la persona por email y luego su UserAccount y VerificationToken
+    const personWithAccount = await this.prisma.person.findUnique({
+      where: { email }, // <-- Buscamos por email
+      include: {
+        userAccount: {
+          include: { verificationToken: true }
         }
       },
     });
 
-    // 2. Validación de existencia y coincidencia 
-    if (!user || !user.verificationToken) { 
-        throw new BadRequestException('Token inválido o expirado. Verifique el código ingresado.');
+    const user = personWithAccount?.userAccount;
+
+    // Validar existencia de la cuenta y token
+    if (!user || !user.verificationToken) {
+      throw new BadRequestException('Cuenta no encontrada o token inválido/expirado.');
     }
 
-    // 2.1 Validación de estado
-    if (user.status === UserStatus.ACTIVE) {
-        throw new BadRequestException('La cuenta ya está activa.');
+    // 2. Verificar que el token coincida
+    if (user.verificationToken.token !== token) {
+      throw new UnauthorizedException('El código de activación ingresado es incorrecto.');
     }
-    
-    const verificationToken = user.verificationToken;
-    
-    // 3. Transacción: Activar cuenta y eliminar token
-    await this.prisma.$transaction(async (tx) => {
-      // a) Actualizar estado a 'active'
+
+    // 🕒 3. Verificar si el token ha expirado
+    const now = new Date();
+    if (now > user.verificationToken.expires_at) {
+      throw new BadRequestException('El token ha expirado. Solicite uno nuevo.');
+    }
+
+    // 4. Transacción para activar cuenta
+    return this.prisma.$transaction(async (tx) => {
+      // Actualizar estado de la cuenta a ACTIVE
       await tx.userAccount.update({
         where: { id: user.id },
         data: { status: UserStatus.ACTIVE },
       });
-      
-      // b) Eliminar el token usado para limpieza
+
+      // Eliminar el token de verificación
       await tx.verificationToken.delete({
-        where: { id: verificationToken.id },
+        where: { id: user.verificationToken.id },
       });
+
+      return { message: '¡Cuenta activada exitosamente! Ya puede iniciar sesión.' };
+    });
+  }
+
+  // =================================================================
+  // HU02: LOGIN (Inicio de sesión - Usando Email)
+  // =================================================================
+  async login(loginAuthDto: LoginAuthDto) {
+    const { email, password } = loginAuthDto; // <-- Usamos email
+
+    // 1. Buscar la persona por email
+    const personWithAccount = await this.prisma.person.findUnique({
+      where: { email },
+      include: {
+        userAccount: {
+          include: { role: { select: { name: true } } }
+        }
+      }
     });
 
-    // 4. Retorno: Indicación para que el frontend redirija a Login (HU02)
-    return { 
-      message: 'Cuenta activada con éxito.',
-      redirectTo: '/auth/login'
+    const userAccount = personWithAccount?.userAccount;
+
+    // 2. Validación de credenciales
+    if (!personWithAccount || !userAccount || !userAccount.password_hash) {
+      throw new UnauthorizedException('Credenciales inválidas (Correo no encontrado).');
+    }
+
+    // Comparar contraseña hasheada
+    const isPasswordValid = await bcrypt.compare(password, userAccount.password_hash);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciales inválidas (Contraseña incorrecta).');
+    }
+
+    // ... (El resto del código de validación de estado es el mismo)
+
+    // 4. Generar Token JWT (Payload)
+    const payload = {
+      sub: userAccount.id,
+      // Usamos el email en el token
+      email: personWithAccount.email,
+      role: userAccount.role.name,
+      // Si el frontend necesita el username, aún puedes incluirlo si está disponible:
+      username: userAccount.username,
+    };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+      user: {
+        id: userAccount.id,
+        username: userAccount.username,
+        role: userAccount.role.name,
+        email: personWithAccount.email,
+        first_names: personWithAccount.first_names,
+      }
     };
   }
+  async resendToken(email: string) {
+  // 1. Buscar usuario
+  const person = await this.prisma.person.findUnique({
+    where: { email },
+    include: { userAccount: { include: { verificationToken: true } } },
+  });
+
+  if (!person || !person.userAccount) {
+    throw new BadRequestException('El usuario no existe.');
+  }
+
+  const user = person.userAccount;
+
+  // 2. Validar que no esté ya activo
+  if (user.status === UserStatus.ACTIVE) {
+    throw new BadRequestException('La cuenta ya está activa.');
+  }
+
+  // 3. Generar nuevo token
+  const newToken = this.generateToken();
+
+  // 4. Actualizar o reemplazar el token anterior
+  await this.prisma.verificationToken.upsert({
+    where: { user_account_id: user.id },
+    update: {
+      token: newToken,
+      expires_at: new Date(Date.now() + 60000), // 1 minuto
+    },
+    create: {
+      token: newToken,
+      user_account_id: user.id,
+      expires_at: new Date(Date.now() + 60000),
+    },
+  });
+
+  // 5. Enviar el correo con el nuevo token
+  await this.emailService.sendToken(email, newToken);
+
+  return { message: 'Se ha enviado un nuevo token de activación.' };
+}
+
 }

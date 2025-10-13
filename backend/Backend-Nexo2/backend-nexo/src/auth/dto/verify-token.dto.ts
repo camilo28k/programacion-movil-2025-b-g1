@@ -1,20 +1,14 @@
-import { IsNotEmpty, IsString, IsNumberString, Length } from 'class-validator';
+import { IsNotEmpty, IsEmail, IsNumberString, Length } from 'class-validator';
 
 export class VerifyTokenDto {
-  
-  // 1. Nombre de Usuario
-  @IsNotEmpty({ message: 'El nombre de usuario es obligatorio.' })
-  @IsString()
-  readonly username: string; 
+  // 1. Correo Electrónico
+  @IsNotEmpty({ message: 'El correo electrónico es obligatorio.' })
+  @IsEmail({}, { message: 'El formato del correo electrónico no es válido.' })
+  readonly email: string; // <-- CAMBIADO DE username A email
 
   // 2. Token de Verificación
-  // 2. Token de Verificación
-@IsNotEmpty({ message: 'El código de verificación es obligatorio.' })
-
-// CÓDIGO CORREGIDO: Sin el { message: '...' }
-@IsNumberString() 
- 
-// Este decorador maneja el mensaje de error de longitud
-@Length(6, 6, { message: 'El token debe tener 6 dígitos exactos.' })
-readonly token: string;
+  @IsNotEmpty({ message: 'El código de verificación es obligatorio.' })
+  @IsNumberString({}, { message: 'El token debe contener solo números (dígitos).' })
+  @Length(6, 6, { message: 'El token debe tener 6 dígitos exactos.' })
+  readonly token: string;
 }

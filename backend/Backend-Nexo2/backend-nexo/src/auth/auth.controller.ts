@@ -1,7 +1,8 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { VerifyTokenDto } from './dto/verify-token.dto';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import { LoginAuthDto } from './dto/login-auth.dto';
 
 // La ruta base para este controlador es 'auth'
 @Controller('auth')
@@ -31,5 +32,15 @@ export class AuthController {
     async confirmToken(@Body() verifyTokenDto: VerifyTokenDto) {
         // Delega la verificación del token y la actualización del estado de la cuenta a 'ACTIVE'.
         return this.authService.activateAccount(verifyTokenDto);
+    }
+    @Post('login')
+    @HttpCode(HttpStatus.OK) // Código 200
+    login(@Body() loginAuthDto: LoginAuthDto) {
+        // El servicio retorna { access_token, user } si las credenciales son válidas
+        return this.authService.login(loginAuthDto);
+    }
+    @Post('resend-token')
+    async resendToken(@Body('email') email: string) {
+        return this.authService.resendToken(email);
     }
 }
