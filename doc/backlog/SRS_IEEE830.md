@@ -83,7 +83,7 @@ No incluye:
 - Las imágenes (perfiles, productos, servicios y promociones) se almacenan en **AWS S3**, garantizando escalabilidad y disponibilidad.  
 - En conjunto, la arquitectura asegura comunicación en tiempo real entre aplicación móvil y servidor, ofreciendo una experiencia fluida para estudiantes, emprendedores y administradores.  
 
-![Lógica app](Imagenes/Imagentaller.png)
+![Lógica app](../Imagenes/Imagentaller.png)
 
 ### 1.2.2 Funciones del producto
 El sistema provee las siguientes funciones principales, descritas a nivel alto:
@@ -331,7 +331,7 @@ Acciones administrativas de control y calidad.
 - contact_request apunta a company y opcionalmente a product y buyer  
 - Cada user_account puede tener solo un verification_token activo (**1:1**).
 
-![Modelado de datos](Imagenes/Modelado_datos.png)
+![Modelado de datos](../Imagenes/Modelado_datos.png)
 
 ## Flujo del Usuario Emprendedor
 
@@ -468,8 +468,8 @@ Acciones administrativas de control y calidad.
 
 ---
 
-**Fecha:** 30 de septiembre del 2025  
-**Versión:** #2  
+**Fecha:** 12 de septiembre del 2025  
+**Versión:** #3  
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo

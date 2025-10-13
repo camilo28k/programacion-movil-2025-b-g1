@@ -212,8 +212,8 @@
 
 ---
 
-**Fecha:** 30 de septiembre del 2025  
-**Versión:** #2  
+**Fecha:** 12 de septiembre del 2025  
+**Versión:** #3  
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo

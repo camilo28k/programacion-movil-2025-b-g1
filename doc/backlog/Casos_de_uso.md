@@ -163,60 +163,60 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 
 ## 3.3 Diagrama de casos de uso (PlantUML)  
 
-![Caso de Uso](Imagenes/CASO_DE_USO.png)
+![Caso de Uso](../Imagenes/CASO_DE_USO.png)
 
 ---
 
 ## 3.4 Diagramas de actividad de las UC (opcional)  
 
 #### UC-01: Registrar cuenta
-![Diagrama UC-01](Imagenes/UC-01.png)
+![Diagrama UC-01](../Imagenes/UC-01.png)
 
 ---  
 
 #### UC-02: Iniciar sesión
-![Diagrama UC-02](Imagenes/UC-02.png)
+![Diagrama UC-02](../Imagenes/UC-02.png)
 
 --- 
 
 #### UC-03: Crear empresa
-![Diagrama UC-03](Imagenes/UC-03.png)
+![Diagrama UC-03](../Imagenes/UC-03.png)
 
 --- 
 
 #### UC-04: Publicar producto o servicio
-![Diagrama UC-04](Imagenes/UC-04.png)
+![Diagrama UC-04](../Imagenes/UC-04.png)
 
 --- 
 
 #### UC-05: Ver catálogo de empresa
-![Diagrama UC-05](Imagenes/UC-05.png)
+![Diagrama UC-05](../Imagenes/UC-05.png)
 
 --- 
 
 #### UC-06: Contactar emprendedor
-![Diagrama UC-06](Imagenes/UC-06.png)
+![Diagrama UC-06](../Imagenes/UC-06.png)
 
 --- 
 
 #### UC-07: Activar promoción
-![Diagrama UC-07](Imagenes/UC-07.png)
+![Diagrama UC-07](../Imagenes/UC-07.png)
 
 --- 
 
 #### UC-08: Gestionar categorías
-![Diagrama UC-08](Imagenes/UC-08.png)
+![Diagrama UC-08](../Imagenes/UC-08.png)
 
 --- 
 
 #### UC-09: Moderar usuarios y publicaciones
-![Diagrama UC-09](Imagenes/UC-09.png)
+![Diagrama UC-09](../Imagenes/UC-09.png)
 
 
 ---
 
-**Fecha:** 30 de septiembre del 2025  
-**Versión:** #2  
+**Fecha:** 12 de septiembre del 2025  
+**Versión:** #3  
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo

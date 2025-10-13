@@ -7,25 +7,25 @@
 
 #### DER (Diagrama Entidad Relación) - Modelado de datos
 
-![Modelado de datos](Imagenes/Modelado_datos.png)
+![Modelado de datos](../Imagenes/Modelado_datos.png)
 
 ---
 
 #### Deployment Diagram – Arquitectura Física
 
-![Deployment Diagram – Arquitectura Física](Imagenes/deployment_diagram.png)
+![Deployment Diagram – Arquitectura Física](../Imagenes/deployment_diagram.png)
 
 ---
 
 #### Diagrama de Paquetes
 
-![Diagrama de Paquetes](Imagenes/diagrama_paquetes.png)
+![Diagrama de Paquetes](../Imagenes/diagrama_paquetes.png)
 
 ---
 
 #### Diagrama de Dominio
 
-![Diagrama de Dominio](Imagenes/diagrama_dominio.png)
+![Diagrama de Dominio](../Imagenes/diagrama_dominio.png)
 
 
 ---
