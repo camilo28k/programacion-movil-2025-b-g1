@@ -4,7 +4,7 @@ export class VerifyTokenDto {
   // 1. Correo Electrónico
   @IsNotEmpty({ message: 'El correo electrónico es obligatorio.' })
   @IsEmail({}, { message: 'El formato del correo electrónico no es válido.' })
-  readonly email: string; // <-- CAMBIADO DE username A email
+  readonly email: string; 
 
   // 2. Token de Verificación
   @IsNotEmpty({ message: 'El código de verificación es obligatorio.' })

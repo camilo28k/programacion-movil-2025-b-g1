@@ -1,9 +1,9 @@
 export interface User_Account {
-    names: string;
-    last_names: string;
-    email: string;
-    phone: number;
-    username: string;
-    password_hash: string;
-    role: string;
+  first_names: string;
+  last_names: string;
+  email: string;
+  phone: string;
+  username: string;
+  password: string;
+  name_rol: 'Emprendedor' | 'Comprador' | 'Admin';
 }

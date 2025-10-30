@@ -30,6 +30,7 @@ export class AuthController {
     @Post('confirm-token')
     @HttpCode(200) // 200 OK: El estándar REST para una actualización/modificación exitosa de un recurso existente.
     async confirmToken(@Body() verifyTokenDto: VerifyTokenDto) {
+        console.log('📩 Datos recibidos:', verifyTokenDto)
         // Delega la verificación del token y la actualización del estado de la cuenta a 'ACTIVE'.
         return this.authService.activateAccount(verifyTokenDto);
     }
