@@ -6,6 +6,6 @@ export class LoginAuthDto {
     email: string; // <-- CAMBIADO DE username A email
 
     @IsNotEmpty({ message: 'La contraseña es obligatoria.' })
-    @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres.' })
+    @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres.' })
     password: string;
 }
