@@ -9,5 +9,8 @@ export const authService = {
   
   verifyToken: (data: { email: string; token: string }) =>
     httpClient.post('/auth/confirm-token', data),
-  
+
+  // ✅ Método para reenviar token
+  resendToken: (email: string) =>
+    httpClient.post('/auth/resend-token', { email }),
 };
