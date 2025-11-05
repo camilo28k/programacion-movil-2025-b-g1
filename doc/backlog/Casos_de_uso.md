@@ -1,12 +1,12 @@
-# Casos de uso (explicación + especificación + diagrama)
+# 🎯 Casos de Uso (explicación + especificación + diagrama)
 
 ## 3.1 ¿Qué es un caso de uso?  
-Una descripción de interacciones entre actores y el sistema para conseguir un objetivo de negocio.  
-Útil para detallar flujos y excepciones.  
+Un caso de uso describe las interacciones entre un actor y el sistema para alcanzar un objetivo específico.  
+Permite entender el comportamiento del sistema, flujos principales y excepciones posibles.
 
 ---
 
-## 3.2 Especificación de casos de uso  
+## 3.2 Especificación de Casos de Uso  
 
 ### UC-01: Registrar cuenta
 | **Campo** | **Descripción** |
@@ -20,8 +20,8 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 | Postcondiciones (fallo) | Mensaje de error si el correo no es válido o ya existe |
 | Flujo principal | 1. Usuario ingresa: *first_names, last_names, email, phone, username, password y role*.<br>2. El sistema valida que el correo termine en **@corhuila.edu.co**.<br>3. Si es válido, se crea el registro en `user_account` con estado `pending` y se envía token de verificación. |
 | Extensiones | • Correo ya registrado → mostrar error.<br>• Correo con dominio inválido → mostrar error. |
-| Reglas de negocio | • El correo debe contener dominio **@corhuila.edu.co**.<br>• Contraseña ≥ 8 caracteres. |
-| RF/RNF relacionados | • RF1, RF2, RF3<br>• RNF1<br>• RS1, RS3 |
+| Reglas de negocio | • El correo debe contener dominio **@corhuila.edu.co**.<br>• Contraseña ≥ 6 caracteres. |
+| RF/RNF relacionados | • RF-01, RF-02, RF-03<br>• RNF-01<br>• RS-01, RS-03 |
 
 ---
 
@@ -35,10 +35,10 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 | Precondiciones | Usuario registrado y activo |
 | Postcondiciones (éxito) | Sesión activa y acceso a funcionalidades según rol |
 | Postcondiciones (fallo) | Mensaje de error, posibilidad de reintento |
-| Flujo principal | 1. Usuario ingresa *username o email* y *password*.<br>2. El sistema valida credenciales.<br>3. Si son correctas, crea la sesión y redirige a pantalla principal. |
+| Flujo principal | 1. Usuario ingresa *username o email* y *password*.<br>2. El sistema valida credenciales.<br>3. Si son correctas, crea la sesión y redirige a la pantalla principal. |
 | Extensiones | • Credenciales inválidas → mostrar error.<br>• 5 intentos fallidos → bloqueo temporal. |
 | Reglas de negocio | • Solo usuarios registrados pueden iniciar sesión. |
-| RF/RNF relacionados | • RF5<br>• RNF1<br>• RS2, RS3 |
+| RF/RNF relacionados | • RF-04<br>• RNF-01<br>• RS-02, RS-03 |
 
 ---
 
@@ -54,8 +54,8 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 | Postcondiciones (fallo) | No se crea la empresa; mensaje de error por datos inválidos o empresa existente |
 | Flujo principal | 1. Emprendedor inicia sesión.<br>2. Selecciona “Crear empresa”.<br>3. Ingresa: *name, description, url (logo/foto/imagen)*.<br>4. El sistema guarda la empresa asociada a su `owner_account_id`. |
 | Extensiones | • Usuario ya tiene empresa → mostrar error.<br>• Datos incompletos → mensaje de validación. |
-| Reglas de negocio | • Cada usuario solo puede tener una empresa registrada.<br>• La categoría debe existir previamente. |
-| RF/RNF relacionados | • RF6, RF10<br>• RNF1<br>• RS4 |
+| Reglas de negocio | • Cada usuario solo puede tener una empresa registrada. |
+| RF/RNF relacionados | • RF-06 (si se incluye formalmente como nueva función de creación de empresa)<br>• RNF-01<br>• RS-04 |
 
 ---
 
@@ -65,31 +65,31 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 | ID | UC-04 |
 | Nombre | Publicar producto o servicio |
 | Actor primario | Emprendedor |
-| Interesados | Usuario |
-| Precondiciones | Producto asociado a la empresa creado y visible en catálogo |
-| Postcondiciones (éxito) | Producto asociado a empresa creado y visible en catálogo |
+| Interesados | Usuario (comprador) |
+| Precondiciones | Usuario con empresa registrada |
+| Postcondiciones (éxito) | Producto creado y visible en el catálogo general |
 | Postcondiciones (fallo) | Producto no creado; mensaje de error por datos inválidos |
 | Flujo principal | 1. Emprendedor accede a su empresa.<br>2. Selecciona “Agregar producto/servicio”.<br>3. Ingresa: *title, description, price, promotion_price (opcional), url (imagen/foto)*.<br>4. El sistema guarda el producto vinculado a la empresa. |
 | Extensiones | • Imagen no válida → mostrar error.<br>• Precio negativo → mensaje de validación. |
 | Reglas de negocio | • El producto debe estar vinculado a una empresa existente.<br>• La imagen debe pesar ≤ 5MB. |
-| RF/RNF relacionados | • RF8, RF10<br>• RNF3<br>• RS4 |
+| RF/RNF relacionados | • RF-06, RF-08<br>• RNF-03<br>• RS-04 |
 
 ---
 
-### UC-05: Ver catálogo de empresa
+### UC-05: Ver catálogo general
 | **Campo** | **Descripción** |
 |-----------|-----------------|
 | ID | UC-05 |
-| Nombre | Ver catálogo de empresa |
+| Nombre | Ver catálogo general |
 | Actor primario | Comprador |
 | Interesados | Usuario |
 | Precondiciones | Usuario registrado |
-| Postcondiciones (éxito) | Listado de productos de la empresa visible |
+| Postcondiciones (éxito) | Listado de productos visibles por categoría |
 | Postcondiciones (fallo) | No se muestran productos; mensaje “No hay productos disponibles” |
-| Flujo principal | 1. Comprador selecciona una empresa del catálogo.<br>2. El sistema muestra productos: *title, description, price, promotion_price (opcional), url (imagen/foto)*. |
-| Extensiones | • Empresa sin productos → mensaje “No hay productos disponibles”. |
+| Flujo principal | 1. Comprador accede al catálogo general.<br>2. El sistema muestra productos: *title, description, price, promotion_price (si aplica), url (imagen/foto)*.<br>3. El usuario puede filtrar por categoría. |
+| Extensiones | • Sin productos en categoría → mensaje “No hay productos disponibles”. |
 | Reglas de negocio | • Solo se muestran productos activos y aprobados.<br>• El catálogo debe cargarse en ≤ 3 segundos. |
-| RF/RNF relacionados | • RF11, RF12, RF13<br>• RNF2 |
+| RF/RNF relacionados | • RF-08, RF-09, RF-10<br>• RNF-02 |
 
 ---
 
@@ -105,8 +105,8 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 | Postcondiciones (fallo) | No se abre WhatsApp; mensaje de error o alternativa |
 | Flujo principal | 1. Comprador selecciona un producto.<br>2. Presiona “Contactar”.<br>3. El sistema abre `wa.me/{phone}`. |
 | Extensiones | • Número no disponible → mostrar error.<br>• WhatsApp no instalado → mensaje alternativo. |
-| Reglas de negocio | • Solo se permite contactar si tiene productos el emprendedor. |
-| RF/RNF relacionados | • RF14<br>• RS3 |
+| Reglas de negocio | • Solo se permite contactar si el emprendedor tiene productos activos. |
+| RF/RNF relacionados | • RF-09<br>• RS-03 |
 
 ---
 
@@ -117,47 +117,13 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 | Nombre | Activar promoción |
 | Actor primario | Emprendedor |
 | Interesados | Usuario |
-| Precondiciones | Producto con promoción activada y precio promocional actualizado |
-| Postcondiciones (éxito) | Promoción ligada al producto visible |
+| Precondiciones | Producto existente sin promoción activa |
+| Postcondiciones (éxito) | Promoción activada y visible en el catálogo |
 | Postcondiciones (fallo) | Producto no actualizado; error por datos inválidos |
-| Flujo principal | 1. Emprendedor selecciona un producto existente.<br>2. Ingresa el *promotion_price* deseado.<br>3. Activa la promoción mediante el campo `is_promotion`.<br>4. El sistema valida:<br>• Que la fecha fin ≥ fecha inicio.<br>• Que *promotion_price* ≤ precio original.<br>5. Si las validaciones pasan, se actualiza el producto con la promoción activa. |
-| Extensiones | • Fecha fin anterior a inicio → error y no activar.<br>• Precio oferta mayor al original → advertencia y no activar. |
-| Reglas de negocio | • Las promociones no se crean, solo se activan/desactivan.<br>• Las fechas deben estar en formato válido.<br>• Solo se puede activar promoción en productos existentes (`product.id`). |
-| RF/RNF relacionados | • RF15<br>• RNF1<br>• RS4 |
-
----
-
-### UC-08: Gestionar categorías
-| **Campo** | **Descripción** |
-|-----------|-----------------|
-| ID | UC-08 |
-| Nombre | Gestionar categorías |
-| Actor primario | Administrador |
-| Interesados | Los dueños de la App Nexo |
-| Precondiciones | Usuario administrador activo |
-| Postcondiciones (éxito) | Categoría creada/actualizada/eliminada y disponible para empresas |
-| Postcondiciones (fallo) | Acción no realizada; error por nombre repetido o categoría en uso |
-| Flujo principal | 1. Admin selecciona “Crear/Editar/Eliminar categoría”.<br>2. Ingresa *name*.<br>3. El sistema guarda cambios. |
-| Extensiones | • Nombre repetido → error.<br>• Categoría en uso → advertencia antes de eliminar. |
-| Reglas de negocio | • Solo el administrador puede realizar esta acción.<br>• El nombre debe tener ≥ 3 caracteres. |
-| RF/RNF relacionados | • RF10<br>• RS4 |
-
----
-
-### UC-09: Moderar usuarios y publicaciones
-| **Campo** | **Descripción** |
-|-----------|-----------------|
-| ID | UC-09 |
-| Nombre | Moderar usuarios y publicaciones |
-| Actor primario | Administrador |
-| Interesados | Los dueños de la App Nexo |
-| Precondiciones | Usuario administrador activo |
-| Postcondiciones (éxito) | Usuario emprendedor suspendido correctamente |
-| Postcondiciones (fallo) | Acción no realizada; error por permisos o validación |
-| Flujo principal | 1. Admin accede al panel de moderación.<br>2. Visualiza lista de `user_account` y `company`.<br>3. Selecciona una entidad (usuario o empresa).<br>4. Registra acción en `moderation_action` con: *admin_id, target_type (user/company), target_id, reason*. |
-| Extensiones | • Acción no permitida → error.<br>• Empresa ya suspendida → advertencia. |
-| Reglas de negocio | • Solo el administrador puede realizar estas acciones. |
-| RF/RNF relacionados | • RF16<br>• RS4 |
+| Flujo principal | 1. Emprendedor selecciona un producto existente.<br>2. Ingresa el *promotion_price* deseado.<br>3. Activa la promoción mediante el campo `is_promotion`.<br>4. El sistema valida:<br>• Que *promotion_price* ≤ precio original.<br>5. Si la validación es correcta, se actualiza el producto con la promoción activa. |
+| Extensiones | • Precio oferta mayor al original → advertencia y no activar. |
+| Reglas de negocio | • Las promociones se activan sobre productos existentes.<br>• El precio promocional no puede ser mayor al original. |
+| RF/RNF relacionados | • RF-10<br>• RNF-01<br>• RS-04 |
 
 ---
 
@@ -189,7 +155,7 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 
 --- 
 
-#### UC-05: Ver catálogo de empresa
+#### UC-05: Ver catálogo de productos
 ![Diagrama UC-05](../Imagenes/UC-05.png)
 
 --- 
@@ -202,21 +168,10 @@ Una descripción de interacciones entre actores y el sistema para conseguir un o
 #### UC-07: Activar promoción
 ![Diagrama UC-07](../Imagenes/UC-07.png)
 
---- 
-
-#### UC-08: Gestionar categorías
-![Diagrama UC-08](../Imagenes/UC-08.png)
-
---- 
-
-#### UC-09: Moderar usuarios y publicaciones
-![Diagrama UC-09](../Imagenes/UC-09.png)
-
-
 ---
 
-**Fecha:** 12 de septiembre del 2025  
-**Versión:** #3  
+**Fecha:** 5 de noviembre del 2025  
+**Versión:** #4   
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo

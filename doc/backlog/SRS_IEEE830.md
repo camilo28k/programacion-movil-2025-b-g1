@@ -5,12 +5,11 @@
 ### 1.1.1 Propósito
 Especificar de manera clara, completa y verificable el comportamiento, interfaces, restricciones y criterios de aceptación de la aplicación móvil **“App-Nexo”**, un marketplace interno para estudiantes de la Universidad de Corhuila que desean publicar, reservar y entregar productos o servicios dentro del campus sin utilizar pasarela de pago.  
 
-El SRS servirá como base única para el diseño, la implementación, las pruebas y la entrega de las **17 HU** del producto (historias de usuario) establecidos en el backlog del proyecto.
+El SRS servirá como base única para el diseño, la implementación, las pruebas y la entrega de las **6 HU** del producto (historias de usuario) establecidos en el backlog del proyecto.
 
 ### 1.1.2 Alcance
 La aplicación permite:  
 - Registro/login con correo institucional.  
-- Gestión de perfiles.  
 - Publicación y edición/eliminación de productos o servicios.  
 - Navegación por catálogo con categorías.  
 - Contacto con emprendedores vía WhatsApp.  
@@ -89,12 +88,7 @@ No incluye:
 El sistema provee las siguientes funciones principales, descritas a nivel alto:
 
 - **Registro y Autenticación de Usuarios**  
-  Permite a los estudiantes (compradores y emprendedores) registrarse mediante correo institucional @corhuila.edu.co, ingresando datos básicos (nombres, apellidos, teléfono, nombre de usuario, contraseña y rol). Incluye validación de identidad mediante token, inicio de sesión y recuperación de contraseña.
-
-- **Gestión de Perfil**  
-  Facilita la edición y personalización de la información de cuenta.  
-  - Emprendedores: pueden registrar/editar datos de su empresa (nombre, descripción y foto).  
-  - Compradores: pueden gestionar datos personales (nombre, teléfono, usuario y contraseña).  
+  Permite a los estudiantes (compradores y emprendedores) registrarse mediante correo institucional @corhuila.edu.co, ingresando datos básicos (nombres, apellidos, teléfono, nombre de usuario, contraseña y rol). Incluye validación de identidad mediante token e inicio de sesión.
 
 - **Publicación de Productos y Servicios**  
   Habilita a los emprendedores a crear, editar o eliminar publicaciones con título, descripción, precio, imagen y promociones opcionales.
@@ -107,9 +101,6 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 
 - **Gestión de Promociones**  
   Ofrece a los emprendedores la posibilidad de activar, desactivar y administrar promociones temporales asociadas a sus publicaciones.
-
-- **Administración y Seguridad**  
-  Permite a los administradores moderar publicaciones, gestionar usuarios/emprendimientos, atender reportes de la comunidad y aplicar sanciones (eliminación de publicaciones o suspensión de cuentas).
 
 - **Funciones opcionales a futuro**  
   Se consideran posibles integraciones de pagos en línea, estadísticas de desempeño y conexión con redes sociales, aunque no están contempladas en esta primera versión.
@@ -125,10 +116,6 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 - **Estudiantes compradores**  
   - *Perfil*: Miembros de la comunidad universitaria interesados en adquirir productos o servicios dentro del campus.  
   - *Habilidades*: Alfabetización digital básica; uso frecuente de apps móviles y mensajería instantánea (WhatsApp).
-
-- **Administradores de la aplicación**  
-  - *Perfil*: Personal encargado de garantizar seguridad, cumplimiento de normas y calidad de publicaciones.  
-  - *Habilidades*: Conocimientos intermedios en gestión de usuarios, revisión de reportes y moderación de contenido.
 
 ---
 
@@ -170,24 +157,16 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 
 ### 1.3.2 Funciones del sistema (Requisitos Funcionales - RF)
 
-| ID    | Descripción                                                                                                                                     | Prioridad | Criterio de aceptación                                                                                   |
-|-------|-------------------------------------------------------------------------------------------------------------------------------------------------|-----------|----------------------------------------------------------------------------------------------------------|
-| RF-01 | El sistema debe permitir el registro de las personas con nombres, apellidos, correo institucional, teléfono, rol, nombre usuario y contraseña.  | Alta      | Dado un correo válido con dominio @corhuila.edu.co y contraseña ≥8, se crea la cuenta y se envía token.  |
-| RF-02 | El sistema debe validar que el correo contenga el dominio @corhuila.edu.co.                                                                     | Alta      | Si el correo no contiene el dominio, el sistema rechaza el registro y muestra mensaje de error.          |
-| RF-03 | El sistema debe enviar un token de verificación al correo institucional con vigencia de 1 minuto y permitir solicitar uno nuevo si expira. Luego, permitir activación mediante dicho token.                                | Alta      | Se envía un token al correo registrado, válido por 1 minuto. Si expira o es inválido, se muestra error y puede reenviarse. Al validarlo, la cuenta pasa a “activo” y permite iniciar sesión.              |
-| RF-04 | El sistema debe permitir recuperación de contraseña mediante enlace o token enviado al correo.                                                  | Media     | Al solicitar recuperación, se envía token/enlace y se permite restablecer la contraseña.                 |
-| RF-05 | El sistema debe permitir iniciar sesión con correo institucional o usuario y contraseña previamente registrados.                                | Alta      | Dadas credenciales válidas, el sistema permite acceso; si no, muestra error.                             |
-| RF-06 | El usuario debe poder editar su perfil (nombre, apellido, teléfono, nombre usuario y contraseña). En caso de ser emprendedor, podrá además registrar o editar la información de su empresa (nombre, descripción y foto). | Media | Al modificar datos válidos y guardar, los cambios se reflejan en el perfil.                             |
-| RF-07 | El sistema debe mostrar la foto de perfil en el catálogo y en las publicaciones.                                                                | Media     | Al subir foto válida, esta aparece en el catálogo y publicaciones del usuario.                          |
-| RF-08 | El emprendedor debe poder crear publicaciones de productos con título, descripción, precio, promoción (opcional) y foto.                        | Alta      | Al completar el formulario y subir imagen válida, la publicación aparece en el catálogo.                 |
-| RF-09 | El emprendedor debe poder editar o eliminar sus publicaciones en cualquier momento.                                                             | Alta      | Al seleccionar una publicación, puede modificarla o eliminarla con confirmación.                        |
-| RF-10 | El sistema debe permitir clasificar publicaciones en categorías (ej.: Comida, Ropa, Servicios).                                                 | Media     | Al seleccionar una categoría, la publicación se organiza correctamente en el catálogo.                  |
-| RF-11 | El sistema debe mostrar un catálogo con todos los productos/servicios publicados.                                                               | Alta      | Al acceder al catálogo, se listan todas las publicaciones disponibles.                                  |
-| RF-12 | El usuario debe poder filtrar productos por categoría.                                                                                          | Media     | Al aplicar un filtro, se muestran solo los productos de esa categoría.                                  |
-| RF-13 | El catálogo debe mostrar el título del producto, descripción, precio, promoción (opcional) y foto.                                              | Alta      | Al ver el catálogo, cada publicación incluye esos elementos visibles.                                   |
-| RF-14 | El sistema debe incluir un botón en cada publicación que redirija a WhatsApp del emprendedor.                                                   | Alta      | Al presionar “Contactar”, se abre WhatsApp con el número del emprendedor.                               |
-| RF-15 | El emprendedor debe poder activar o desactivar promociones en un producto, definiendo un precio promocional cuando corresponda.                 | Media     | Al ingresar fechas válidas y guardar, la promoción aparece vinculada al producto.                       |
-| RF-16 | El administrador debe poder suspender la cuenta de empresarios que incumplan las normas.                                                        | Alta      | Al confirmar acción, la cuenta se suspende/desactiva en el sistema.                                     |
+| ID | Descripción | Prioridad | Criterio de aceptación |
+|----|--------------|------------|------------------------|
+| **RF-01** | El sistema debe permitir el registro de las personas con nombres, apellidos, correo institucional, teléfono, rol, nombre usuario y contraseña. | Alta | Dado un correo válido con dominio @corhuila.edu.co y contraseña ≥6, se crea la cuenta y se envía token. |
+| **RF-02** | El sistema debe validar que el correo contenga el dominio @corhuila.edu.co. | Alta | Si el correo no contiene el dominio, el sistema rechaza el registro y muestra mensaje de error. |
+| **RF-03** | El sistema debe enviar un token de verificación al correo institucional con vigencia de 1 minuto y permitir solicitar uno nuevo si expira. Luego, permitir activación mediante dicho token. | Alta | Se envía un token válido por 1 minuto; si expira o es inválido, puede reenviarse. Al validarlo, la cuenta se activa. |
+| **RF-04** | El sistema debe permitir iniciar sesión con correo institucional o usuario y contraseña previamente registrados. | Alta | Dadas credenciales válidas, el sistema permite acceso; si no, muestra error. |
+| **RF-05** | El emprendedor debe poder crear publicaciones de productos con título, descripción, precio, promoción (opcional) y foto. | Alta | Al completar el formulario y subir imagen válida, la publicación aparece en el catálogo. |
+| **RF-06** | El emprendedor debe poder editar o eliminar sus publicaciones. | Alta | Puede modificar o eliminar una publicación con confirmación. |
+| **RF-07** | El sistema debe mostrar un catálogo general con todas las publicaciones, clasificadas por categoría. | Alta | Al acceder al catálogo, se listan publicaciones filtrables por categoría. |
+| **RF-08** | Cada publicación debe mostrar título, descripción, precio, promoción (si aplica), foto y un botón para contactar al emprendedor por WhatsApp. | Alta | Al presionar “Contactar”, se abre WhatsApp con el número del emprendedor. |
 
 ---
 
@@ -229,7 +208,6 @@ Gestión de información básica de las personas y sus cuentas de usuario.
 - name (string, unique)  
 
 Roles precargados (INSERT inicial):  
-- admin  
 - emprendedor  
 - comprador  
 
@@ -363,23 +341,6 @@ Acciones administrativas de control y calidad.
 
 ---
 
-## Flujo del Usuario Administrador
-
-### 1. Registro y Autenticación
-- El admin se registra como un usuario normal. El sistema le asigna el role de **admin**.
-- Al iniciar sesión, el sistema identifica su `role_id` y le presenta las opciones de administración.
-
-### 2. Gestión de Categorías
-- Puede crear, editar y eliminar nuevas categorías en la tabla `category` ingresando los campos de `url` y `name`.
-
-### 3. Gestión de Empresas y Usuarios
-- El admin puede ver un listado de todos los `user_account` y `company` registrados.
-- El admin hace revisiones periódicas y puede tomar acciones de moderación como **suspend** o **reactivate** a un usuario o empresa.  
-  Esta acción se registra en la tabla `moderation_action`, indicando el `admin_id`, `target_id` y `target_type`.
-- Si una empresa es eliminada, su relación `1:N` con `product` asegura que todos sus productos sean eliminados automáticamente (**ON DELETE CASCADE**).
-
----
-
 ## Flujo del Usuario Comprador
 
 ### 1. Registro y Autenticación
@@ -391,10 +352,6 @@ Acciones administrativas de control y calidad.
 
 ### 3. Interacción con las Publicaciones
 - Al seleccionar un producto, puede iniciar un `contact_request` para comunicarse directamente con el emprendedor a través de **WhatsApp**.
-
-### 4. Gestión de Perfil
-- Puede editar sus datos personales en la tabla `person` (`first_name`, `last_name`, `phone`).  
-- También en la tabla `user_account` (`username`, `password_hash`).
 
 ---
 
@@ -468,8 +425,9 @@ Acciones administrativas de control y calidad.
 
 ---
 
-**Fecha:** 12 de septiembre del 2025  
-**Versión:** #3  
+**Fecha:** 5 de noviembre del 2025  
+**Versión:** #4  
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo
+
