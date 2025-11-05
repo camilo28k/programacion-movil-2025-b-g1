@@ -82,7 +82,7 @@ No incluye:
 - Las imágenes (perfiles, productos, servicios y promociones) se almacenan en **AWS S3**, garantizando escalabilidad y disponibilidad.  
 - En conjunto, la arquitectura asegura comunicación en tiempo real entre aplicación móvil y servidor, ofreciendo una experiencia fluida para estudiantes, emprendedores y administradores.  
 
-![Lógica app](../Imagenes/Imagentaller.png)
+![Lógica app](../Imagenes/imagentaller.png)
 
 ### 1.2.2 Funciones del producto
 El sistema provee las siguientes funciones principales, descritas a nivel alto:
