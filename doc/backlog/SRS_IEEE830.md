@@ -426,7 +426,7 @@ Acciones administrativas de control y calidad.
 
 ---
 
-**Fecha:** 5 de noviembre del 2025  
+**Fecha:** 6 de noviembre del 2025  
 **Versión:** #4  
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
