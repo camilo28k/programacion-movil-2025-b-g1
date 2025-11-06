@@ -5,7 +5,7 @@
 ### 1.1.1 Propósito
 Especificar de manera clara, completa y verificable el comportamiento, interfaces, restricciones y criterios de aceptación de la aplicación móvil **“App-Nexo”**, un marketplace interno para estudiantes de la Universidad de Corhuila que desean publicar, reservar y entregar productos o servicios dentro del campus sin utilizar pasarela de pago.  
 
-El SRS servirá como base única para el diseño, la implementación, las pruebas y la entrega de las **6 HU** del producto (historias de usuario) establecidos en el backlog del proyecto.
+El SRS servirá como base única para el diseño, la implementación, las pruebas y la entrega de las **7 HU** del producto (historias de usuario) establecidos en el backlog del proyecto.
 
 ### 1.1.2 Alcance
 La aplicación permite:  
@@ -163,10 +163,11 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 | **RF-02** | El sistema debe validar que el correo contenga el dominio @corhuila.edu.co. | Alta | Si el correo no contiene el dominio, el sistema rechaza el registro y muestra mensaje de error. |
 | **RF-03** | El sistema debe enviar un token de verificación al correo institucional con vigencia de 1 minuto y permitir solicitar uno nuevo si expira. Luego, permitir activación mediante dicho token. | Alta | Se envía un token válido por 1 minuto; si expira o es inválido, puede reenviarse. Al validarlo, la cuenta se activa. |
 | **RF-04** | El sistema debe permitir iniciar sesión con correo institucional o usuario y contraseña previamente registrados. | Alta | Dadas credenciales válidas, el sistema permite acceso; si no, muestra error. |
-| **RF-05** | El emprendedor debe poder crear publicaciones de productos con título, descripción, precio, promoción (opcional) y foto. | Alta | Al completar el formulario y subir imagen válida, la publicación aparece en el catálogo. |
-| **RF-06** | El emprendedor debe poder editar o eliminar sus publicaciones. | Alta | Puede modificar o eliminar una publicación con confirmación. |
-| **RF-07** | El sistema debe mostrar un catálogo general con todas las publicaciones, clasificadas por categoría. | Alta | Al acceder al catálogo, se listan publicaciones filtrables por categoría. |
-| **RF-08** | Cada publicación debe mostrar título, descripción, precio, promoción (si aplica), foto y un botón para contactar al emprendedor por WhatsApp. | Alta | Al presionar “Contactar”, se abre WhatsApp con el número del emprendedor. |
+| **RF-05** | El emprendedor debe poder crear una empresa con nombre, descripción e imagen opcional. | Alta | Al completar el formulario y guardar, se registra la empresa y queda disponible para crear publicaciones. |
+| **RF-06** | El emprendedor debe poder crear publicaciones de productos con título, descripción, precio, promoción (opcional) y foto. | Alta | Al completar el formulario y subir imagen válida, la publicación aparece en el catálogo. |
+| **RF-07** | El emprendedor debe poder editar o eliminar sus publicaciones. | Alta | Puede modificar o eliminar una publicación con confirmación. |
+| **RF-08** | El sistema debe mostrar un catálogo general con todas las publicaciones, clasificadas por categoría. | Alta | Al acceder al catálogo, se listan publicaciones filtrables por categoría. |
+| **RF-09** | Cada publicación debe mostrar título, descripción, precio, promoción (si aplica), foto y un botón para contactar al emprendedor por WhatsApp. | Alta | Al presionar “Contactar”, se abre WhatsApp con el número del emprendedor. |
 
 ---
 

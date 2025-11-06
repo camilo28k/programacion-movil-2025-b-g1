@@ -6,10 +6,11 @@
 |----|-------------|-------------------|------------------|------------|-----------------|
 | **HU01** | Usuario (emprendedor o comprador) | Registrarme con mis datos personales y recibir un token de verificación en mi correo institucional | Activar mi cuenta y acceder a la app | Alta | RF-01, RF-02, RF-03 |
 | **HU02** | Usuario | Iniciar sesión con correo o usuario y contraseña | Acceder a mi perfil y funcionalidades según mi rol | Alta | RF-04 |
-| **HU03** | Emprendedor | Crear publicaciones con título, descripción, precio, foto (y promoción opcional) | Mostrar mis productos a los compradores | Alta | RF-06 |
-| **HU04** | Emprendedor | Editar o eliminar mis publicaciones | Mantener actualizado mi catálogo | Alta | RF-07 |
-| **HU05** | Comprador | Ver catálogo de productos clasificados por categorías | Encontrar fácilmente lo que necesito | Alta | RF-08 |
-| **HU06** | Comprador | Ver detalles de un producto y contactar al emprendedor por WhatsApp | Coordinar la compra de forma directa | Alta | RF-09 | 
+| **HU03** | Emprendedor | Crear una empresa con nombre, descripción e imagen opcional | Mostrar la identidad de mi negocio antes de publicar productos | Alta | RF-09 |
+| **HU04** | Emprendedor | Crear publicaciones con título, descripción, precio, foto (y promoción opcional) | Mostrar mis productos a los compradores | Alta | RF-05 |
+| **HU05** | Emprendedor | Editar o eliminar mis publicaciones | Mantener actualizado mi catálogo | Alta | RF-06 |
+| **HU06** | Comprador | Ver catálogo de productos clasificados por categorías | Encontrar fácilmente lo que necesito | Alta | RF-07 |
+| **HU07** | Comprador | Ver detalles de un producto y contactar al emprendedor por WhatsApp | Coordinar la compra de forma directa | Alta | RF-08 |
 
 ---
 

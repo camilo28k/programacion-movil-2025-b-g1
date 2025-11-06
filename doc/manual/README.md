@@ -138,8 +138,8 @@ AWS_SECRET_ACCESS_KEY=
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_SECURE=false
-EMAIL_USER=haroldcamilobarreragiraldo3@gmail.com
-EMAIL_PASSWORD=wfbveapjoqesijsd
+EMAIL_USER=correo_aqui
+EMAIL_PASSWORD=CLAVE_AQUI
 EMAIL_FROM_NAME="Nexo Innovación"
 EMAIL_FROM_ADDRESS="no-reply@nexo.com"
 
