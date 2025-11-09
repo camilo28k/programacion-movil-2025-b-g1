@@ -28,7 +28,7 @@ const LoginForm: React.FC = () => {
         console.log('✅ Login exitoso. Token recibido:', token);
 
         // Redirige a la pantalla principal
-        history.push('/home');
+        history.push('/home_entrepreneurs');
       } else {
         console.error('❌ No se recibió ningún token del servidor.');
         alert('No se recibió token. Revisa el backend.');

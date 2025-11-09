@@ -6,6 +6,9 @@ import Register from './pages/Register';
 import Token from './pages/Token';
 import Enter from './pages/Enter';
 import Login from './pages/Login';
+import HomePov1 from './pages/HomePov1';
+import CompanyPov1 from './pages/CompanyPov1';
+import FormCompany from './pages/FormCompany';
 
 const App: React.FC = () => {
   return (
@@ -16,6 +19,9 @@ const App: React.FC = () => {
           <Route path="/login" component={Login} /> 
           <Route path="/register" component={Register} /> 
           <Route path="/token" component={Token} /> 
+          <Route path="/home_entrepreneurs" component={HomePov1} /> 
+          <Route path="/companies_entrepreneurs" component={CompanyPov1} /> 
+          <Route path="/companies_form" component={FormCompany} /> 
           <Route exact path="/">
             <Redirect to="/enter" />
           </Route>
