@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient // Correcto: Solo el PrismaService extiende PrismaClient
+export class PrismaService extends PrismaClient 
     implements OnModuleInit, OnModuleDestroy {
 
     async onModuleInit() {

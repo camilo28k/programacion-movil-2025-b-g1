@@ -1,18 +1,21 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config'; // <-- Importar ConfigModule
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { EmailModule } from './shared/email/email.module'; // <-- Asegúrate de tener EmailModule
+import { EmailModule } from './shared/email/email.module'; 
+import { CategoryModule } from './category/category.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
-    // CLAVE: Cargar y hacer global el ConfigModule
     ConfigModule.forRoot({
       isGlobal: true, 
     }), 
     PrismaModule, 
     AuthModule,
-    EmailModule, // Asegúrate de que el EmailModule esté aquí
+    EmailModule,
+    CategoryModule,
+    CompanyModule, 
   ],
   controllers: [],
   providers: [],
