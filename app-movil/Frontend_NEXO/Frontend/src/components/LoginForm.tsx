@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import '../theme/login.css';
 import { authService } from '../api/AuthService';
-
+import httpClient from '../api/httpClient'; // 👈 importante para configurar el header
 
 const LoginForm: React.FC = () => {
   const history = useHistory();
@@ -18,16 +18,19 @@ const LoginForm: React.FC = () => {
       // Enviar credenciales al backend
       const response = await authService.login({ email, password });
 
-      // El backend debe responder con { access_token: '...' }
+      // El backend responde con { access_token: '...' }
       const token = response.data.access_token;
 
       if (token) {
-        // Guarda el token para mantener la sesión
+        // ✅ Guarda el token para mantener la sesión
         localStorage.setItem('access_token', token);
+
+        // ✅ Configura Axios para enviar automáticamente el token
+        httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         console.log('✅ Login exitoso. Token recibido:', token);
 
-        // Redirige a la pantalla principal
+        // Redirige al home de emprendedores
         history.push('/home_entrepreneurs');
       } else {
         console.error('❌ No se recibió ningún token del servidor.');

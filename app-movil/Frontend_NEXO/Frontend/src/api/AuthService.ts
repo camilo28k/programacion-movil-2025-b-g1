@@ -14,3 +14,12 @@ export const authService = {
   resendToken: (email: string) =>
     httpClient.post('/auth/resend-token', { email }),
 };
+
+export const categoryService = {
+  getAll: () => httpClient.get('/category'),
+};
+
+export const companyService = {
+  create: (data: any) => httpClient.post("/company", data),
+  getAll: () => httpClient.get("/company"),
+};
