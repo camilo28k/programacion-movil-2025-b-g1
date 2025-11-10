@@ -71,7 +71,24 @@ model Company {
   owner_account    UserAccount @relation(fields: [owner_account_id], references: [id])
   category_id      String?
   category         Category?   @relation(fields: [category_id], references: [id])
+  products         Product[]
 }
+
+model Product {
+  id               String     @id @default(uuid())
+  title            String
+  description      String?
+  price            Decimal    @db.Decimal(10, 2)
+  is_promotion     Boolean    @default(false)
+  promotion_price  Decimal?   @db.Decimal(10, 2)
+  url              String?
+  company_id       String
+  company          Company    @relation(fields: [company_id], references: [id])
+  created_at       DateTime   @default(now())
+  updated_at       DateTime   @updatedAt
+}
+
+
 
 
 model VerificationToken {
