@@ -12,12 +12,8 @@ export default defineConfig({
     host: 'localhost',
     port: 8100,
     https: {
-      key: fs.readFileSync(
-        path.resolve('C:/Users/USUARIO/Documents/Programacion movil/backend/Backend-Nexo2/backend-nexo/secrets/localhost-key.pem')
-      ),
-      cert: fs.readFileSync(
-        path.resolve('C:/Users/USUARIO/Documents/Programacion movil/backend/Backend-Nexo2/backend-nexo/secrets/localhost.pem')
-      ),
+      key: fs.readFileSync('/Users/marianapereiraospina/Desktop/REPO PROGRAMACION CAMILO/backend/Backend-Nexo2/backend-nexo/secrets/localhost-key.pem'),
+      cert: fs.readFileSync('/Users/marianapereiraospina/Desktop/REPO PROGRAMACION CAMILO/backend/Backend-Nexo2/backend-nexo/secrets/localhost.pem'),
     },
   },
 });
