@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_USER = 'haroldbg'
+        DOCKERHUB_CREDENTIALS = 'dockerhub-token'
+        IMAGE_BACKEND = 'task-movil-api'
+    }
+
+    stages {
+
+        stage('Database Reset & Migrations') {
+            steps {
+                echo '🧹 Reiniciando base de datos y aplicando migraciones...'
+                // Ejecuta el script db:reset que definiste en package.json
+                sh 'npm install'
+                sh 'npm run db:reset'
+            }
+        }
+
+        stage('Build & Push Backend Image') {
+            steps {
+                echo '⚙️ Construyendo y subiendo imagen del backend...'
+                sh 'docker build -t $DOCKERHUB_USER/$IMAGE_BACKEND:latest .'
+                withCredentials([string(credentialsId: "$DOCKERHUB_CREDENTIALS", variable: 'DOCKERHUB_PASS')]) {
+                    sh 'echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin'
+                    sh 'docker push $DOCKERHUB_USER/$IMAGE_BACKEND:latest'
+                }
+            }
+        }
+
+        stage('Deploy Updated Stack') {
+            steps {
+                echo '🚀 Desplegando contenedores (PostgreSQL + Backend actualizado)...'
+                // Si prefieres reutilizar el db:reset también aquí, puedes comentar las siguientes dos líneas
+                sh 'docker compose down || true'
+                sh 'docker compose up -d --build'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completado exitosamente.'
+        }
+        failure {
+            echo '❌ Error en el pipeline. Revisa los logs.'
+        }
+    }
+}

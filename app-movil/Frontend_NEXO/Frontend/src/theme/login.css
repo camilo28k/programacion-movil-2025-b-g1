@@ -1,0 +1,75 @@
+/* Estilo de los inputs */
+.login-item {
+    background: #b9b7b7dc;
+    border-radius: 30px;
+    margin-bottom: 23px;
+    width: 270px; /* ancho total del input */
+    padding-left: 20px;
+    min-height: 50px; 
+}
+
+/* Estilo específico del Label */
+.login-label {
+  margin-left: -2px;   /* mueve solo el texto */
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.15); /* sombra ligera en el texto */
+}
+
+
+
+.container-login {
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.logo-login {
+  width: 200px;               /* tamaño de la imagen */
+  margin-top: 30px;
+  margin-bottom: 24px;
+  margin-bottom: 70px; 
+  background: #fff;
+  border-radius: 50%;         /* forma circular */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  position: relative;
+}
+
+.boton-verde-login {
+  width: 250px;
+  background: #39d353;
+  color: #ffffff;
+  border-radius: 28px;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 32px;
+  letter-spacing: 1px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 6px 16px rgba(109, 113, 109, 0.35);
+}
+
+
+.register-text-button {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-weight: bold;
+  color: #fcfcfcff;
+  cursor: pointer;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease-in-out; /* transición suave */
+}
+
+
+
+
