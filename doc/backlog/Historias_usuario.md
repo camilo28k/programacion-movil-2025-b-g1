@@ -7,8 +7,8 @@
 | **HU01** | Usuario (emprendedor o comprador) | Registrarme con mis datos personales y recibir un token de verificación en mi correo institucional | Activar mi cuenta y acceder a la app | Alta | RF-01, RF-02, RF-03 |
 | **HU02** | Usuario | Iniciar sesión con correo o usuario y contraseña | Acceder a mi perfil y funcionalidades según mi rol | Alta | RF-04 |
 | **HU03** | Usuario | Solicitar un nuevo token si el anterior expiró o no llegó al correo | Completar la activación de mi cuenta y poder ingresar a la aplicación | Alta | RF-03 |
-| **HU04** | Emprendedor | Crear una empresa con nombre, descripción e imagen opcional | Mostrar la identidad de mi negocio antes de publicar productos | Alta | RF-09 |
-| **HU05** | Emprendedor | Crear publicaciones con título, descripción, precio, foto (y promoción opcional) | Mostrar mis productos a los compradores | Alta | RF-05 |
+| **HU04** | Emprendedor | Crear una empresa con nombre, descripción e imagen opcional | Mostrar la identidad de mi negocio antes de publicar productos | Alta | RF-05 |
+| **HU05** | Emprendedor | Crear publicaciones con título, descripción, precio, foto (y promoción opcional) | Mostrar mis productos a los compradores | Alta | RF-06 |
 
 ---
 
