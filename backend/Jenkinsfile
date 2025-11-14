@@ -32,39 +32,40 @@ pipeline {
             steps {
                 echo '🔐 Cargando credenciales desde Jenkins y generando .env...'
 
-                withCredentials([
-                    string(credentialsId: 'pg-user', variable: 'POSTGRES_USER'),
-                    string(credentialsId: 'pg-pass', variable: 'POSTGRES_PASSWORD'),
-                    string(credentialsId: 'pg-db', variable: 'POSTGRES_DB'),
-                    string(credentialsId: 'email-pass', variable: 'EMAIL_PASSWORD'),
-                    string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET')
-                ]) {
+            withCredentials([
+                string(credentialsId: 'pg-user', variable: 'POSTGRES_USER'),
+                string(credentialsId: 'pg-pass', variable: 'POSTGRES_PASSWORD'),
+                string(credentialsId: 'pg-db', variable: 'POSTGRES_DB'),
+                string(credentialsId: 'email-pass', variable: 'EMAIL_PASSWORD'),
+                string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET')
+            ]) {
 
-                    sh '''
-                        cd backend
+                sh '''
+                    cd backend
 
-                        echo "POSTGRES_USER=$POSTGRES_USER" > .env
-                        echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
-                        echo "POSTGRES_DB=$POSTGRES_DB" >> .env
+                    echo "POSTGRES_USER=$POSTGRES_USER" > .env
+                    echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+                    echo "POSTGRES_DB=$POSTGRES_DB" >> .env
 
-                        echo "EMAIL_HOST=smtp.gmail.com" >> .env
-                        echo "EMAIL_PORT=587" >> .env
-                        echo "EMAIL_SECURE=false" >> .env
-                        echo "EMAIL_USER=haroldcamilobarreragiraldo3@gmail.com" >> .env
-                        echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> .env
-                        echo "EMAIL_FROM_NAME=Nexo Innovación" >> .env
-                        echo "EMAIL_FROM_ADDRESS=no-reply@nexo.com" >> .env
+                    echo "EMAIL_HOST=smtp.gmail.com" >> .env
+                    echo "EMAIL_PORT=587" >> .env
+                    echo "EMAIL_SECURE=false" >> .env
+                    echo "EMAIL_USER=haroldcamilobarreragiraldo3@gmail.com" >> .env
+                    echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> .env
+                    echo "EMAIL_FROM_NAME=Nexo Innovación" >> .env
+                    echo "EMAIL_FROM_ADDRESS=no-reply@nexo.com" >> .env
 
-                        echo "JWT_SECRET=$JWT_SECRET" >> .env
-                        echo "JWT_EXPIRATION_TIME=3600s" >> .env
+                    echo "JWT_SECRET=$JWT_SECRET" >> .env
+                    echo "JWT_EXPIRATION_TIME=3600s" >> .env
 
-                        echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB?schema=public" >> .env
+                    # IMPORTANTE: Prisma desde Jenkins NO puede usar "db"
+                    echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB?schema=public" >> .env
 
-                        echo "📝 Archivo .env generado correctamente en backend/"
-                    '''
-                }
+                    echo "📝 Archivo .env generado correctamente en backend/"
+                '''
             }
         }
+    }
 
         stage('Database Reset & Migrations') {
             steps {
@@ -80,7 +81,7 @@ pipeline {
         stage('Build & Push Backend Image') {
             steps {
                 echo '⚙️ Construyendo y subiendo imagen del backend a DockerHub...'
-                
+
                 sh '''
                     cd backend
                     docker build -t $DOCKERHUB_USER/$IMAGE_BACKEND:latest .
@@ -98,7 +99,6 @@ pipeline {
         stage('Deploy Updated Stack') {
             steps {
                 echo '🚀 Desplegando stack actualizado (Postgres + Backend)...'
-
                 sh '''
                     cd backend
                     docker compose down || true
