@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'node:20'
-            args '-u root:root'
-        }
-    }
+    agent any
 
     environment {
         DOCKERHUB_USER = 'haroldbg'
@@ -65,7 +60,7 @@ pipeline {
 
                         echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB?schema=public" >> .env
 
-                        echo "📝 Archivo .env generado correctamente en backend/."
+                        echo "📝 Archivo .env generado correctamente en backend/"
                     '''
                 }
             }
@@ -85,7 +80,7 @@ pipeline {
         stage('Build & Push Backend Image') {
             steps {
                 echo '⚙️ Construyendo y subiendo imagen del backend a DockerHub...'
-
+                
                 sh '''
                     cd backend
                     docker build -t $DOCKERHUB_USER/$IMAGE_BACKEND:latest .
