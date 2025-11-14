@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import "../../theme/companyCard.css";
 
 interface CompanyCardProps {
@@ -11,8 +12,24 @@ interface CompanyCardProps {
 }
 
 const CompanyCard: React.FC<CompanyCardProps> = ({
-  imageSrc, name, owner, tagline, cta, onClick
+  imageSrc,
+  name,
+  owner,
+  tagline,
+  cta,
+  onClick,
 }) => {
+  const history = useHistory();
+
+  // 🔹 Si el botón dice "Entrar", redirige automáticamente
+  const handleClick = () => {
+    if (cta.toLowerCase() === "entrar") {
+      history.push("/products_entrepreneurs");
+    } else {
+      onClick?.();
+    }
+  };
+
   return (
     <div className="company-card">
       <div className="company-card-image">
@@ -24,7 +41,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({
         <p className="company-card-owner">{owner}</p>
         <p className="company-card-tagline">“{tagline}”</p>
 
-        <button className="company-card-btn" onClick={onClick}>
+        <button className="company-card-btn" onClick={handleClick}>
           {cta}
         </button>
       </div>

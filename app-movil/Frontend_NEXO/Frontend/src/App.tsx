@@ -9,6 +9,9 @@ import Login from './pages/Login';
 import HomePov1 from './pages/HomePov1';
 import CompanyPov1 from './pages/CompanyPov1';
 import FormCompany from './pages/FormCompany';
+import ProductPov1 from './pages/ProductPov1';
+import FormProduct from './pages/FormProduct';
+import ProductDetail from './pages/ProductDetail';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +25,10 @@ const App: React.FC = () => {
           <Route path="/home_entrepreneurs" component={HomePov1} /> 
           <Route path="/companies_entrepreneurs" component={CompanyPov1} /> 
           <Route path="/companies_form" component={FormCompany} /> 
+          <Route path="/products_entrepreneurs" component={ProductPov1} /> 
+          <Route path="/products_form" component={FormProduct} /> 
+          <Route path="/products_details" component={ProductDetail} /> 
+           
           <Route exact path="/">
             <Redirect to="/enter" />
           </Route>
