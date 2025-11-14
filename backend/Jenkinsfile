@@ -59,7 +59,9 @@ pipeline {
                     echo "JWT_EXPIRATION_TIME=3600s" >> .env
 
                     # AHORA Prisma puede conectarse a db, porque Jenkins está en la red nexo-network
+                    # Correcto: dentro de Docker, el host es "db"
                     echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB?schema=public" >> .env
+
 
                     echo "📝 Archivo .env generado correctamente en backend/"
                 '''
