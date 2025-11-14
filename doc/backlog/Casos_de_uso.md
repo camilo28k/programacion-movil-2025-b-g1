@@ -76,44 +76,10 @@ Permite entender el comportamiento del sistema, flujos principales y excepciones
 
 ---
 
-### UC-05: Ver catálogo general
+### UC-05: Activar promoción
 | **Campo** | **Descripción** |
 |-----------|-----------------|
 | ID | UC-05 |
-| Nombre | Ver catálogo general |
-| Actor primario | Comprador |
-| Interesados | Usuario |
-| Precondiciones | Usuario registrado |
-| Postcondiciones (éxito) | Listado de productos visibles por categoría |
-| Postcondiciones (fallo) | No se muestran productos; mensaje “No hay productos disponibles” |
-| Flujo principal | 1. Comprador accede al catálogo general.<br>2. El sistema muestra productos: *title, description, price, promotion_price (si aplica), url (imagen/foto)*.<br>3. El usuario puede filtrar por categoría. |
-| Extensiones | • Sin productos en categoría → mensaje “No hay productos disponibles”. |
-| Reglas de negocio | • Solo se muestran productos activos y aprobados.<br>• El catálogo debe cargarse en ≤ 3 segundos. |
-| RF/RNF relacionados | • RF-08, RF-09, RF-10<br>• RNF-02 |
-
----
-
-### UC-06: Contactar emprendedor
-| **Campo** | **Descripción** |
-|-----------|-----------------|
-| ID | UC-06 |
-| Nombre | Contactar emprendedor |
-| Actor primario | Comprador |
-| Interesados | Usuario |
-| Precondiciones | Producto visible |
-| Postcondiciones (éxito) | Redirección a WhatsApp con el número del emprendedor |
-| Postcondiciones (fallo) | No se abre WhatsApp; mensaje de error o alternativa |
-| Flujo principal | 1. Comprador selecciona un producto.<br>2. Presiona “Contactar”.<br>3. El sistema abre `wa.me/{phone}`. |
-| Extensiones | • Número no disponible → mostrar error.<br>• WhatsApp no instalado → mensaje alternativo. |
-| Reglas de negocio | • Solo se permite contactar si el emprendedor tiene productos activos. |
-| RF/RNF relacionados | • RF-09<br>• RS-03 |
-
----
-
-### UC-07: Activar promoción
-| **Campo** | **Descripción** |
-|-----------|-----------------|
-| ID | UC-07 |
 | Nombre | Activar promoción |
 | Actor primario | Emprendedor |
 | Interesados | Usuario |
@@ -153,25 +119,15 @@ Permite entender el comportamiento del sistema, flujos principales y excepciones
 #### UC-04: Publicar producto o servicio
 ![Diagrama UC-04](../Imagenes/UC-04.png)
 
---- 
+---
 
-#### UC-05: Ver catálogo de productos
+#### UC-05: Activar promoción
 ![Diagrama UC-05](../Imagenes/UC-05.png)
-
---- 
-
-#### UC-06: Contactar emprendedor
-![Diagrama UC-06](../Imagenes/UC-06.png)
-
---- 
-
-#### UC-07: Activar promoción
-![Diagrama UC-07](../Imagenes/UC-07.png)
 
 ---
 
-**Fecha:** 5 de noviembre del 2025  
-**Versión:** #4   
+**Fecha:** 14 de noviembre del 2025  
+**Versión:** #5   
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo

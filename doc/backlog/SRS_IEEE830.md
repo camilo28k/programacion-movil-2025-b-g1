@@ -5,17 +5,18 @@
 ### 1.1.1 Propósito
 Especificar de manera clara, completa y verificable el comportamiento, interfaces, restricciones y criterios de aceptación de la aplicación móvil **“App-Nexo”**, un marketplace interno para estudiantes de la Universidad de Corhuila que desean publicar, reservar y entregar productos o servicios dentro del campus sin utilizar pasarela de pago.  
 
-El SRS servirá como base única para el diseño, la implementación, las pruebas y la entrega de las **7 HU** del producto (historias de usuario) establecidos en el backlog del proyecto.
+El SRS servirá como base única para el diseño, la implementación, las pruebas y la entrega de las **5 HU** del producto (historias de usuario) establecidos en el backlog del proyecto.
 
 ### 1.1.2 Alcance
 La aplicación permite:  
 - Registro/login con correo institucional.  
-- Publicación y edición/eliminación de productos o servicios.  
+- Publicación de productos o servicios.  
 - Navegación por catálogo con categorías.  
 - Contacto con emprendedores vía WhatsApp.  
 - Creación de promociones.  
 
 No incluye:  
+- Accciones del CRUD como actualizar y eliminar (empresas, productos o perfil de usuario)
 - Pagos en línea.  
 - Integración con redes sociales.  
 - Métricas de ventas.  
@@ -77,9 +78,9 @@ No incluye:
 ## 1.2 Descripción general
 
 ### 1.2.1 Perspectiva del producto
-- La solución inicia como una aplicación web desarrollada en **Next.js**, conectada a un backend en **NestJS**. Posteriormente se migrará a **Ionic + React** para empaquetar la app móvil (Android/iOS).  
+- La solución inicia como una aplicación web desarrollada en **Ionic React**, conectada a un backend en **NestJS**.
 - El backend gestiona la lógica de negocio, autenticación, validación de usuarios y administración de datos en **PostgreSQL**.  
-- Las imágenes (perfiles, productos, servicios y promociones) se almacenan en **AWS S3**, garantizando escalabilidad y disponibilidad.  
+- Las imágenes se almacenan como URLs en la base de datos y se sirven desde un servidor público; el frontend las renderiza mediante el atributo src, desde donde el navegador realiza una solicitud HTTP GET para obtener y mostrar los bytes del recurso. 
 - En conjunto, la arquitectura asegura comunicación en tiempo real entre aplicación móvil y servidor, ofreciendo una experiencia fluida para estudiantes, emprendedores y administradores.  
 
 ![Lógica app](../Imagenes/Imagen_Taller.png)
@@ -92,9 +93,6 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 
 - **Publicación de Productos y Servicios**  
   Habilita a los emprendedores a crear, editar o eliminar publicaciones con título, descripción, precio, imagen y promociones opcionales.
-
-- **Catálogo y Búsqueda**  
-  Proporciona a los compradores navegación por categorías, búsqueda de productos/servicios y exploración de emprendimientos disponibles dentro de la aplicación.
 
 - **Interacción y Comunicación**  
   Permite que compradores contacten directamente a los emprendedores a través de WhatsApp mediante enlaces generados en la app.
@@ -165,9 +163,6 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 | **RF-04** | El sistema debe permitir iniciar sesión con correo institucional o usuario y contraseña previamente registrados. | Alta | Dadas credenciales válidas, el sistema permite acceso; si no, muestra error. |
 | **RF-05** | El emprendedor debe poder crear una empresa con nombre, descripción e imagen opcional. | Alta | Al completar el formulario y guardar, se registra la empresa y queda disponible para crear publicaciones. |
 | **RF-06** | El emprendedor debe poder crear publicaciones de productos con título, descripción, precio, promoción (opcional) y foto. | Alta | Al completar el formulario y subir imagen válida, la publicación aparece en el catálogo. |
-| **RF-07** | El emprendedor debe poder editar o eliminar sus publicaciones. | Alta | Puede modificar o eliminar una publicación con confirmación. |
-| **RF-08** | El sistema debe mostrar un catálogo general con todas las publicaciones, clasificadas por categoría. | Alta | Al acceder al catálogo, se listan publicaciones filtrables por categoría. |
-| **RF-09** | Cada publicación debe mostrar título, descripción, precio, promoción (si aplica), foto y un botón para contactar al emprendedor por WhatsApp. | Alta | Al presionar “Contactar”, se abre WhatsApp con el número del emprendedor. |
 
 ---
 
@@ -210,7 +205,6 @@ Gestión de información básica de las personas y sus cuentas de usuario.
 
 Roles precargados (INSERT inicial):  
 - emprendedor  
-- comprador  
 
 **verification_token**  
 - id (UUID, PK)  
@@ -331,7 +325,6 @@ Acciones administrativas de control y calidad.
 - Desde su `company`, el emprendedor puede agregar un `product`.
 - Llena un formulario con: `title`, `description`, `price`, `url` (foto) y `promotion_price` (opcional).
 - Las imágenes de los productos se guardan en `system_file` con `entity_type: 'product'`.
-- Puede **editar o eliminar** sus propios productos.
 
 ### 4. Gestión de Promociones
 - Desde un `product` específico, puede habilitar una promoción configurando el campo `is_promotion` a `true` y estableciendo el `promotion_price`.
@@ -342,29 +335,14 @@ Acciones administrativas de control y calidad.
 
 ---
 
-## Flujo del Usuario Comprador
-
-### 1. Registro y Autenticación
-- El proceso es idéntico al del emprendedor, con la diferencia de que el `name` (role) asignado es **comprador**.
-
-### 2. Exploración del Catálogo
-- Puede navegar y buscar productos publicados.
-- Los productos se muestran con sus detalles (`title`, `description`, `price`) y se pueden filtrar por `category`.
-
-### 3. Interacción con las Publicaciones
-- Al seleccionar un producto, puede iniciar un `contact_request` para comunicarse directamente con el emprendedor a través de **WhatsApp**.
-
----
-
 ### 1.3.5 Restricciones de diseño — plataformas, SDKs, guías UI
 
 #### Plataformas soportadas
-- Inicialmente: **Next.js (web)**.  
-- Futuro: migración a **Ionic + React** para soportar Android/iOS.
+- Inicialmente: **Ionic + React** para soportar Android/iOS.
 - Backend en **NestJS (Node.js)** con **PostgreSQL**.
 
 #### Infraestructura
-- Imágenes en **AWS S3**.  
+- Imágenes alojadas en un servidor público accesible vía HTTP.
 - Base de datos centralizada en **AWS RDS** (PostgreSQL).
 
 #### SDKs y librerías
@@ -426,8 +404,8 @@ Acciones administrativas de control y calidad.
 
 ---
 
-**Fecha:** 6 de noviembre del 2025  
-**Versión:** #4  
+**Fecha:** 14 de noviembre del 2025  
+**Versión:** #5 
 **Responsables:**  
 - Danay Mariana Pereira Ospina  
 - Harold Camilo Barrera Giraldo
