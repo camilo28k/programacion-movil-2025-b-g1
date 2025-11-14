@@ -1,10 +1,12 @@
 pipeline {
-    agent anyagent {
+
+    agent {
         docker {
             image 'node:20'
             args '-u root:root'
         }
     }
+
     environment {
         DOCKERHUB_USER = 'haroldbg'
         IMAGE_BACKEND = 'task-movil-api'
