@@ -26,7 +26,8 @@ COPY package*.json ./
 RUN npm install --omit=dev
 
 # Exponer el puerto configurado en tu app (por ejemplo, 8081)
-EXPOSE 8081
+EXPOSE 3000
+
 
 # Comando para ejecutar la aplicación
 CMD ["node", "dist/main.js"]
