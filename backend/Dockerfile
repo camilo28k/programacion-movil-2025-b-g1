@@ -2,34 +2,30 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copiar archivos de configuración
+# 1. Copiar package.json e instalar dependencias
 COPY package*.json ./
-
-# Instalar dependencias
 RUN npm install
 
-# Copiar el resto del código fuente
+# 2. Copiar TODO el proyecto antes de generar Prisma
 COPY . .
 
-# Compilar el proyecto
+# 3. Prisma schema está ahora dentro de ./prisma
+RUN npx prisma generate
+
+# 4. Compilar Nest
 RUN npm run build
+
 
 # Etapa 2: Imagen final
 FROM node:20-alpine
 WORKDIR /app
 
-# Copiar build final
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/prisma ./prisma
 COPY package*.json ./
-
-# Instalar solo dependencias necesarias
-RUN npm install --omit=dev
-
-# Copiar tus certificados HTTPS
 COPY secrets ./secrets
 
-# Exponer puerto
 EXPOSE 3000
-
-# Comando para ejecutar la app
 CMD ["node", "dist/main.js"]
+
