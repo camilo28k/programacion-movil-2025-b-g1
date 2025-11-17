@@ -23,3 +23,8 @@ export const companyService = {
   create: (data: any) => httpClient.post("/company", data),
   getAll: () => httpClient.get("/company"),
 };
+
+export const productService = {
+  create: (data: any) => httpClient.post("/product", data),
+  getAll: () => httpClient.get("/product"),
+};

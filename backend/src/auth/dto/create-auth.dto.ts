@@ -16,9 +16,10 @@ export class CreateAuthDto {
   @IsNotEmpty()
   email: string;
 
+  @IsNotEmpty({ message: 'El teléfono es obligatorio.' })
   @IsString()
-  @IsOptional()
-  phone?: string;
+  phone: string;
+
 
   @IsNotEmpty()
   @IsString()

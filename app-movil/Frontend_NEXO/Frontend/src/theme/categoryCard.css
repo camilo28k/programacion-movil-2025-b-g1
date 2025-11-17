@@ -1,6 +1,6 @@
 .category-card {
   width: 170px;
-  height: 220px;
+  height: 180px;
   background: #fff;
   border-radius: 30px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
@@ -12,8 +12,15 @@
   position: relative;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
-  margin-top: 25px; /* 🔹 separa las filas verticalmente */
+  margin-top: 60px; /* 🔹 separa las filas verticalmente */
+  
 }
+
+/* La PRIMERA tarjeta queda más pegada a la frase */
+.category-card:first-child {
+  margin-top: 16px;   /* antes heredaba 40px */
+}
+
 
 .category-card:hover {
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);

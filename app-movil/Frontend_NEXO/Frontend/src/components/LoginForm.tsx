@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import '../theme/login.css';
 import { authService } from '../api/AuthService';
-import httpClient from '../api/httpClient'; // 👈 importante para configurar el header
+import httpClient from '../api/httpClient';
 
 const LoginForm: React.FC = () => {
   const history = useHistory();
@@ -13,12 +13,11 @@ const LoginForm: React.FC = () => {
 
   // 🔥 Lógica de login conectada al backend
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // evita recarga del form
+
     try {
-      // Enviar credenciales al backend
       const response = await authService.login({ email, password });
 
-      // El backend responde con { access_token: '...' }
       const token = response.data.access_token;
 
       if (token) {
@@ -68,7 +67,8 @@ const LoginForm: React.FC = () => {
         <IonInput
           type="email"
           value={email}
-          onIonChange={e => setEmail(e.detail.value!)}
+          // 👇 usar onIonInput para que el estado se actualice antes del submit
+          onIonInput={e => setEmail(e.detail.value ?? '')}
         />
       </IonItem>
 
@@ -80,14 +80,14 @@ const LoginForm: React.FC = () => {
         <IonInput
           type="password"
           value={password}
-          onIonChange={e => setPassword(e.detail.value!)}
+          onIonInput={e => setPassword(e.detail.value ?? '')}
         />
       </IonItem>
 
-      {/* Botón iniciar sesión */}
-      <div className="boton-verde-login" onClick={handleLogin}>
+      {/* Botón iniciar sesión como botón real del form */}
+      <button type="submit" className="boton-verde-login">
         Iniciar sesión
-      </div>
+      </button>
     </form>
   );
 };

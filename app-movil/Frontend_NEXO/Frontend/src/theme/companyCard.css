@@ -4,11 +4,10 @@
   border-radius: 26px;
   box-shadow: 0 10px 26px rgba(0,0,0,.12);
   position: relative;
-  padding-top: 60px;                /* espacio para la imagen circular */
+  padding-top: 80px;                /* espacio para la imagen circular */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 80px; /* espacio para la imagen circular */
   margin-top: 25px; /* 🔹 separa las filas verticalmente */
 }
 
@@ -104,12 +103,16 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;      /* centra verticalmente el contenido */
   align-items: center;
-  gap: 18px;                    /* espacio entre los elementos */
-  min-height: calc(100vh - 420px); /* ocupa el espacio restante del layout */
-  padding: 10px 0 30px;
+  gap: 18px;
+  /* ❌ quita el centrado vertical y la altura mínima rígida */
+  /* justify-content: center; */
+  /* min-height: calc(100vh - 420px); */
+
+  /* ✅ usa solo padding para dar aire */
+  padding: 24px 0 30px;   /* un poco más de espacio arriba */
 }
+
 
 /* Preview de imagen (si se sube foto) */
 .company-form__preview {
@@ -162,10 +165,13 @@ textarea:-webkit-autofill {
 /* Textarea coherente */
 .pill-textarea {
   resize: none;
+  min-height: 80px;     /* antes 80px */
   height: 80px;
   background-color: #b0abab !important;
   color: #3a3838;
+  overflow-y: hidden;     /* 👈 no muestra scrollbar */
 }
+
 
 /* Campo de foto (simula botón gris) */
 .pill-file {
@@ -178,7 +184,8 @@ textarea:-webkit-autofill {
 /* Botón rojo principal */
 .btn-create {
   margin-top: 12px;
-  width: 240px;
+  width: 100%;          /* 🔹 ocupa todo el ancho del form */
+  max-width: 280px;     /* 🔹 límite para que no se haga enorme */
   height: 52px;
   border-radius: 26px;
   border: none;
@@ -190,6 +197,7 @@ textarea:-webkit-autofill {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
+
 
 .btn-create:hover {
   background: #8f3f25;

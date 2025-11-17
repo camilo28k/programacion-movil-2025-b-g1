@@ -1,26 +1,63 @@
+// src/pages/ProductPov1.tsx
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import HomeLayout from "../layout/HomeLayout";
 import Product_entrepreneur from "../components/Product_entrepreneur";
 
+interface LocationState {
+  companyId?: string;
+  companyName?: string;
+}
+
 const ProductPov1: React.FC = () => {
   const history = useHistory();
+  const location = useLocation<LocationState>();
 
-  // 🔹 Función para navegar al formulario de producto
+  // 1️⃣ Intentar desde state
+  let { companyId, companyName } = location.state || {};
+
+  // 2️⃣ Fallback a localStorage
+  if (!companyId) {
+    const saved = localStorage.getItem("selectedCompany");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as { id: string; name: string };
+        companyId = parsed.id;
+        companyName = parsed.name;
+      } catch (e) {
+        console.error("Error leyendo selectedCompany en ProductPov1", e);
+      }
+    }
+  }
+
   const handleAddProduct = () => {
-    history.push("/products_form");
+    if (!companyId) {
+      alert("No se ha seleccionado ninguna empresa. Vuelve y entra desde una empresa.");
+      return;
+    }
+
+    history.push("/products_form", {
+      companyId,
+      companyName,
+    });
   };
 
   return (
     <HomeLayout
       backTo="/companies_entrepreneurs"
       heroImages={[
-        "/assets/salchipapa.png", // imagen principal de la empresa
-        "/assets/hamburguesa.png"
+        "/assets/hamburguesa.png",
+        "/assets/reloj.png",
+        "/assets/zapato.png",
       ]}
       logoSrc="/assets/logo_blanco.png"
-      title="Prueba las mejores comidas de la universidad"
-      titleHighlight="Corhuila"
+      title="Descubre lo que este emprendimiento tiene"
+      titleHighlight="para ti"
+      headerTitle={
+        companyName
+          ? `Empresa: ${companyName}`
+          : "Empresa"
+      }
       headerAction={
         <button
           className="home-actionBtn"
@@ -32,8 +69,7 @@ const ProductPov1: React.FC = () => {
         </button>
       }
     >
-      <Product_entrepreneur/>
-
+      <Product_entrepreneur />
     </HomeLayout>
   );
 };

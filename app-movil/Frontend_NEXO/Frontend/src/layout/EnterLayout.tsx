@@ -23,7 +23,6 @@ const EnterLayout: React.FC<EnterLayoutProps> = ({ children, background }) => {
           width: '450px',
           maxWidth: 430,
           minHeight: '99vh',
-          borderRadius: 40,
           boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
           display: 'flex',
           flexDirection: 'column',

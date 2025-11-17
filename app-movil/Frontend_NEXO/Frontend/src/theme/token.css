@@ -41,10 +41,15 @@
 /* Inputs de token */
 .token-inputs {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 40px; /* más espacio antes del cronómetro */
+  justify-content: space-between;
+  gap: 8px;                 /* un poquito menos de separación */
+  margin: 0 auto 40px;      /* centrado y con margen abajo */
+  width: 100%;
+  max-width: 320px;         /* 👈 límite de ancho cómodo */
+  padding: 0 8px;           /* 👈 aire extra a los lados */
+  box-sizing: border-box;
 }
+
 
 .token-oval {
   width: 50px;

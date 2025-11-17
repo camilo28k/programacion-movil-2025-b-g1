@@ -1,47 +1,74 @@
+// src/components/Cards/FormProductCards.tsx
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import "../../theme/companyCard.css"; // reutilizamos los estilos del form
+import "../../theme/companyCard.css";
 
 export interface ProductFormValues {
   title: string;
   description: string;
-  price: string;      // lo manejamos formateado en string (ej: "20000")
-  promo?: string;     // texto opcional (ej: "2x1", "-10%", etc.)
-  imageUrl: string;   // URL de imagen
+  price: string;
+  promo?: string;
+  imageUrl: string;
 }
 
 interface FormProductCardProps {
-  onSubmit?: (values: ProductFormValues) => void;
+  onSubmit?: (values: ProductFormValues) => Promise<void> | void;
 }
 
 const FormProductCard: React.FC<FormProductCardProps> = ({ onSubmit }) => {
-  const history = useHistory();
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [promo, setPromo] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const values = { title, description, price, promo, imageUrl };
-    onSubmit?.(values);
-    console.log("✅ Crear Producto ->", values);
+    if (!title.trim() || !price.trim()) {
+      alert("El título y el precio son obligatorios.");
+      return;
+    }
 
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      history.push("/products_entrepreneurs");
-    }, 1300);
+    if (Number.isNaN(Number(price))) {
+      alert("El precio debe ser un número válido.");
+      return;
+    }
+
+    if (promo && Number.isNaN(Number(promo))) {
+      alert("La promoción debe ser un número válido.");
+      return;
+    }
+
+    const values: ProductFormValues = {
+      title,
+      description,
+      price,
+      promo,
+      imageUrl,
+    };
+
+    try {
+      setSubmitting(true);
+
+      if (onSubmit) {
+        await onSubmit(values);   // 👈 solo esto
+      }
+
+      console.log("✅ Crear Producto ->", values);
+      setShowSuccess(true);
+    } catch (err) {
+      console.error("❌ Error al crear producto:", err);
+      alert("No se pudo crear el producto. Revisa los datos o intenta nuevamente.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <>
       <form className="company-form" onSubmit={handleSubmit}>
-        {/* Preview */}
         {imageUrl && (
           <div className="company-form__preview">
             <img src={imageUrl} alt="preview" />
@@ -58,10 +85,9 @@ const FormProductCard: React.FC<FormProductCardProps> = ({ onSubmit }) => {
 
         <textarea
           className="pill-input pill-textarea"
-          placeholder="Descripción"
+          placeholder="Descripción (opcional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          rows={3}
         />
 
         <input
@@ -72,11 +98,10 @@ const FormProductCard: React.FC<FormProductCardProps> = ({ onSubmit }) => {
           onChange={(e) => setPrice(e.target.value)}
         />
 
-
         <input
           className="pill-input"
           type="text"
-          placeholder="Promoción"
+          placeholder="Precio en promoción (opcional)"
           value={promo}
           onChange={(e) => setPromo(e.target.value)}
         />
@@ -89,12 +114,15 @@ const FormProductCard: React.FC<FormProductCardProps> = ({ onSubmit }) => {
           onChange={(e) => setImageUrl(e.target.value)}
         />
 
-        <button type="submit" className="btn-create">
-          Crear Producto
+        <button
+          type="submit"
+          className="btn-create"
+          disabled={submitting}
+        >
+          {submitting ? "Creando..." : "Crear Producto"}
         </button>
       </form>
 
-      {/* Overlay de éxito */}
       {showSuccess && (
         <div className="success-overlay">
           <div className="success-card">

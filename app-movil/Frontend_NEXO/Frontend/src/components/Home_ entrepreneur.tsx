@@ -1,11 +1,11 @@
+// src/components/Home_entrepreneur.tsx
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import CategoryCard from "./Cards/CategoryCards";
 import { categoryService } from "../api/AuthService";
 
-
 interface Category {
-  _id: string;
+  id: string;      // 👈 aquí usamos "id", no "_id"
   name: string;
   url: string;
 }
@@ -14,13 +14,25 @@ const Home_entrepreneur: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const history = useHistory();
 
-  // Maneja clic en cada categoría
-  const handleCategoryClick = (category: string) => {
-    console.log(`Entrando a ${category}`);
-    history.push("/companies_entrepreneurs");
+  const handleCategoryClick = (cat: Category) => {
+    console.log(`Entrando a categoría: ${cat.name}`);
+
+    // 🟡 Guardar la categoría seleccionada (por si luego se pierde el state)
+    localStorage.setItem(
+      "selectedCategory",
+      JSON.stringify({
+        id: cat.id,
+        name: cat.name,
+      })
+    );
+
+    // 🔵 Ir a la pantalla de empresas filtrando por categoría
+    history.push("/companies_entrepreneurs", {
+      categoryId: cat.id,
+      categoryName: cat.name,
+    });
   };
 
-  // Actualización automática sin recargar página
   useEffect(() => {
     const fetchCategories = () => {
       categoryService
@@ -32,10 +44,10 @@ const Home_entrepreneur: React.FC = () => {
         .catch((err) => console.error("Error al cargar categorías", err));
     };
 
-    fetchCategories(); // 🔹 Llamada inicial
-    const interval = setInterval(fetchCategories, 1000); // 🔹 Actualiza cada 5s
+    fetchCategories();
+    const interval = setInterval(fetchCategories, 1000);
 
-    return () => clearInterval(interval); // 🔹 Limpieza al desmontar
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -50,10 +62,10 @@ const Home_entrepreneur: React.FC = () => {
     >
       {categories.map((cat) => (
         <CategoryCard
-          key={cat._id}
+          key={cat.id}
           imageSrc={cat.url}
           name={cat.name}
-          onClick={() => handleCategoryClick(cat.name)}
+          onClick={() => handleCategoryClick(cat)}
         />
       ))}
     </div>
@@ -61,4 +73,3 @@ const Home_entrepreneur: React.FC = () => {
 };
 
 export default Home_entrepreneur;
-

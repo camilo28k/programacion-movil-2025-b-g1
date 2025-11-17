@@ -1,11 +1,26 @@
 // src/pages/CompanyPov1.tsx
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import HomeLayout from "../layout/HomeLayout";
 import Company_entrepreneur from "../components/Company_entrepreneur";
 
+interface LocationState {
+  categoryId?: string;
+  categoryName?: string;
+}
+
 const CompanyPov1: React.FC = () => {
   const history = useHistory();
+  const location = useLocation<LocationState>();
+
+  // 1️⃣ Intentar obtenerlos del state
+  const stateCategoryName = location.state?.categoryName;
+
+  // 2️⃣ Fallback: intentar desde localStorage
+  const storedCategory = localStorage.getItem("selectedCategory");
+  const fallbackCategory = storedCategory ? JSON.parse(storedCategory) : null;
+
+  const categoryName = stateCategoryName || fallbackCategory?.name;
 
   // 🔹 Función para navegar al formulario
   const handleAddCompany = () => {
@@ -24,10 +39,15 @@ const CompanyPov1: React.FC = () => {
       title="Lo mejor de nuestros"
       titleHighlight="estudiantes"
       titleAfter="en un solo lugar"
+      headerTitle={
+        categoryName
+          ? `Categoría: ${categoryName}`
+          : "Categoría"
+      } 
       headerAction={
         <button
           className="home-actionBtn"
-          onClick={handleAddCompany} // 👈 aquí la acción
+          onClick={handleAddCompany}
           aria-label="Agregar compañía"
           title="Agregar compañía"
         >

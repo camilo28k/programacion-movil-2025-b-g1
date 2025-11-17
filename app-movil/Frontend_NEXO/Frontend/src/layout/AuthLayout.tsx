@@ -32,9 +32,8 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, backTo }) => {
                 <div style={{
                     width: '100%',
                     maxWidth: 430,
-                    minHeight: '90vh',
+                    minHeight: '100vh',
                     background: '#fff',
-                    borderRadius: 40,
                     boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
                     display: 'flex',
                     flexDirection: 'column',
@@ -43,7 +42,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, backTo }) => {
                     overflow: 'hidden'
                 }}>
                     {/* Encabezado verde compacto con curva abajo */}
-                    <div style={{ position: 'relative', width: '100%', height: '140px', background: 'transparent', overflow: 'visible', borderTopLeftRadius: 32, borderTopRightRadius: 32 }}>
+                    <div style={{ position: 'relative', width: '100%', height: '140px', background: 'transparent', overflow: 'visible' }}>
                         {/* Fondo verde */}
                         <div style={{
                             position: 'absolute',
@@ -52,8 +51,6 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, backTo }) => {
                             width: '100%',
                             height: '140px',
                             background: '#39d353',
-                            borderTopLeftRadius: 32,
-                            borderTopRightRadius: 32,
                             zIndex: 0
                         }}></div>
 
@@ -62,7 +59,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, backTo }) => {
                             viewBox="0 0 400 60"
                             style={{
                                 position: 'absolute',
-                                bottom: 0,
+                                bottom: -1,
                                 left: 0,
                                 width: '100%',
                                 height: '60px',
@@ -112,35 +109,35 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, backTo }) => {
                         {children}
                     </div>
 
-                    {/* Pie de página verde con curva arriba */}
-                    <div style={{
-                        position: 'relative',
-                        width: '100%',
-                        height: '100px',
-                        background: '#39d353',
-                        overflow: 'hidden',
-                        borderBottomLeftRadius: 32,
-                        borderBottomRightRadius: 32
-                    }}>
+                    {/* Pie de página con curva verde */}
+                    <div
+                        style={{
+                            position: "relative",
+                            width: "100%",
+                            height: "100px",
+                            background: "#ffffff", // 👈 ahora blanco
+                            overflow: "hidden",
+                        }}
+                    >
                         <svg
-                            viewBox="0 0 400 60"
+                            viewBox="0 0 400 80"
                             style={{
-                                position: 'absolute',
-                                top: 0,
+                                position: "absolute",
+                                bottom: 0,
                                 left: 0,
-                                width: '100%',
-                                height: '60px',
-                                zIndex: 1,
-                                transform: 'rotate(180deg)'
+                                width: "100%",
+                                height: "100%",
                             }}
                             preserveAspectRatio="none"
                         >
+                            {/* Curva + zona verde en una sola figura */}
                             <path
-                                d="M0,20 Q100,60 200,40 Q300,20 400,60 L400,60 L0,60 Z"
-                                fill="#fff"
+                                d="M0,0 Q100,40 200,20 Q300,0 400,40 L400,80 L0,80 Z"
+                                fill="#39d353"
                             />
                         </svg>
                     </div>
+
                 </div>
             </div>
         </IonPage>

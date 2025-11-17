@@ -1,14 +1,15 @@
+// src/components/Cards/ProductDetailCard.tsx
 import React from "react";
 import "../../theme/productDetail.css";
 
 export interface ProductDetailProps {
-  imageSrc: string;          // imagen circular del producto
-  name: string;              // "Salchipapa Mixta"
-  description: string;       // texto con ingredientes / detalle
-  oldPrice?: string;         // "$ 20.000" (opcional)
-  price: string;             // "$ 18.000"
-  phone?: string;            // número de WhatsApp del vendedor
-  ctaText?: string;          // "Contactar" por defecto
+  imageSrc: string;
+  name: string;
+  description: string;
+  oldPrice?: string;
+  price: string;
+  phone?: string;   // viene del usuario (registro / login)
+  ctaText?: string;
 }
 
 const ProductDetailCard: React.FC<ProductDetailProps> = ({
@@ -17,19 +18,22 @@ const ProductDetailCard: React.FC<ProductDetailProps> = ({
   description,
   oldPrice,
   price,
-  phone = "573202817466", // 👈 número por defecto (ejemplo, cámbialo)
+  phone, // puedes dejar este fallback o quitarlo
   ctaText = "Contactar",
 }) => {
-  // función para abrir WhatsApp
   const handleContact = () => {
-    const message = `Hola 👋, estoy interesado en el producto *${name}* que vi en Nexo UH.`;
+    if (!phone) {
+      alert("No se encontró un número de contacto para este emprendedor.");
+      return;
+    }
+
+    const message = `Hola, estoy interesado/a en el producto *${name}* que vi en Nexo UH.`;
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
 
   return (
     <div className="pd-card">
-      {/* avatar circular encima */}
       <div className="pd-avatar">
         <img src={imageSrc} alt={name} />
       </div>

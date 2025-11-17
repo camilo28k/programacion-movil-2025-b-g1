@@ -1,3 +1,4 @@
+// models/user_account.model.ts
 export interface User_Account {
   first_names: string;
   last_names: string;
@@ -5,5 +6,5 @@ export interface User_Account {
   phone: string;
   username: string;
   password: string;
-  name_rol: 'Emprendedor' | 'Comprador' | 'Admin';
+  name_rol: 'Emprendedor' | 'Comprador'; // 👈 restringimos un poco
 }

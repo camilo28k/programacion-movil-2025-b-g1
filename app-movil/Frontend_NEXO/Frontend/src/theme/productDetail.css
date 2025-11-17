@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   padding: 6px 10px 24px;
-  margin-top: 50px;   /* 🔹 espacio adicional entre la frase y la card */
+  margin-top: 60px;   /* 🔹 espacio adicional entre la frase y la card */
 }
 
 /* tarjeta principal */
@@ -40,6 +40,7 @@
 .pd-body {
   text-align: center;
   padding: 8px 8px 0;
+  margin-top: 25px;
 }
 
 .pd-title {

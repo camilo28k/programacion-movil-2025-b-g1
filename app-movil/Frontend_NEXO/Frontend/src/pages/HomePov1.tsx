@@ -16,6 +16,7 @@ const HomePov1: React.FC = () => (
         title="Lo mejor de nuestros"
         titleHighlight="estudiantes"
         titleAfter="en un solo lugar"
+        headerTitle="Categorías" 
 
     >
         {/* 👇 Aquí va el contenido de las categorías */}

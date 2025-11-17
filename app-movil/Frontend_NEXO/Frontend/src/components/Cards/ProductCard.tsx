@@ -1,24 +1,20 @@
+// src/components/Cards/ProductCard.tsx
 import React from "react";
-import { useHistory } from "react-router-dom";
-import "../../theme/companyCard.css"; // reutilizamos los estilos base
+import "../../theme/companyCard.css";
 
 interface ProductCardProps {
   imageSrc: string;      // Imagen del producto
-  name: string;          // Nombre del producto (p. ej. "Salchipapa Mixta")
-  price: string;         // Precio formateado (p. ej. "$ 20.000")
+  name: string;          // Nombre del producto
+  price: string;         // Precio formateado
+  onClick?: () => void;  // 👉 el padre maneja la navegación al detalle
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   imageSrc,
   name,
   price,
+  onClick,
 }) => {
-  const history = useHistory();
-
-  const handleClick = () => {
-    history.push("/products_details"); // 👈 redirige al detalle
-  };
-
   return (
     <div className="company-card">
       <div className="company-card-image">
@@ -38,7 +34,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {price}
         </p>
 
-        <button className="company-card-btn" onClick={handleClick}>
+        <button
+          className="company-card-btn"
+          onClick={onClick}
+        >
           Detalles
         </button>
       </div>
