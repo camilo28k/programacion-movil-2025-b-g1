@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const httpClient = axios.create({
-  baseURL: 'https://pricey-grizzly-bethany.ngrok-free.dev/api', // nueva URL del túnel
+  baseURL: "https://pricey-grizzly-bethany.ngrok-free.dev/api",
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
 });
