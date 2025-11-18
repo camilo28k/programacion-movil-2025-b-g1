@@ -11,7 +11,7 @@ import { extname } from 'path';
 import { Request } from 'express';
 
 @Controller('upload')
-export class UploadController {
+export class UploadsController {
 
   @Post()
   @UseInterceptors(
