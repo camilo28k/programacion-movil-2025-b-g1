@@ -23,18 +23,22 @@ async function bootstrap() {
 
   // ✔ CORS actualizado con tu nueva URL pública de ngrok
     app.enableCors({
-    origin: [
-      'capacitor://localhost',     // ← NECESARIO PARA LA APK
-      'ionic://localhost',         // ← NECESARIO PARA IOS
-      'http://localhost',
-      'http://localhost:8100',
-      'https://localhost:8100',
-      'http://127.0.0.1',
-      'https://pricey-grizzly-bethany.ngrok-free.dev' // tu ngrok
-    ],
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-  });
+  origin: [
+    'capacitor://localhost',
+    'ionic://localhost',
+    'http://localhost',
+    'http://localhost:8100',
+    'https://localhost:8100',
+    'http://127.0.0.1',
+    'https://pricey-grizzly-bethany.ngrok-free.dev'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Authorization'],
+  credentials: true,
+});
+
+
 
 
   // Archivos estáticos
