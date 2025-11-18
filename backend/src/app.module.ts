@@ -6,6 +6,7 @@ import { EmailModule } from './shared/email/email.module';
 import { CategoryModule } from './category/category.module';
 import { CompanyModule } from './company/company.module';
 import { ProductModule } from './product/product.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { ProductModule } from './product/product.module';
     EmailModule,
     CategoryModule,
     CompanyModule,
-    ProductModule, 
+    ProductModule,
+    UploadsModule, 
   ],
   controllers: [],
   providers: [],
