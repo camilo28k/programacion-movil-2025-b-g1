@@ -23,13 +23,14 @@ async function bootstrap() {
 
   // ✔ CORS actualizado con tu nueva URL pública de ngrok
     app.enableCors({
-  origin: true, // ← permite cualquier origen dinámicamente (necesario con ngrok)
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   preflightContinue: false,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200, // ← CAMBIAR ESTO
 });
+
 
 
 
