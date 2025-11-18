@@ -16,13 +16,22 @@ services:
     volumes:
       - nexo-data:/var/lib/postgresql/data
 
+    # 🔥 HEALTHCHECK PROFESIONAL
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: nexo-backend
     depends_on:
-      - db
+      db:
+        condition: service_healthy   # 👈 Espera a que la DB esté healthy
     ports:
       - "3000:3000"
     environment:

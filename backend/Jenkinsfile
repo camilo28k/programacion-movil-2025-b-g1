@@ -22,9 +22,9 @@ pipeline {
             }
         }
 
-        stage('Load Secrets & Generate .env') {
+        stage('Generate .env') {
             steps {
-                echo '🔐 Generando archivo .env con credenciales de Jenkins...'
+                echo '🔐 Generando archivo .env...'
 
                 withCredentials([
                     string(credentialsId: 'pg-user', variable: 'POSTGRES_USER'),
@@ -53,19 +53,42 @@ pipeline {
                         echo "JWT_EXPIRATION_TIME=3600s" >> .env
 
                         echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB?schema=public" >> .env
-
-                        echo "📝 Archivo .env generado correctamente."
                     '''
                 }
             }
         }
 
-        stage('Start Database Service') {
+        stage('Start Database') {
             steps {
-                echo '🐘 Iniciando base de datos con Docker Compose...'
+                echo '🐘 Iniciando base de datos...'
                 sh '''
                     cd backend
                     docker compose up -d db
+                '''
+            }
+        }
+
+        stage('Wait for PostgreSQL') {
+            steps {
+                echo '⏳ Esperando a que Postgres esté listo...'
+                sh '''
+                    echo "Esperando que nexo-db esté healthy..."
+
+                    for i in {1..30}; do
+                      STATUS=$(docker inspect --format='{{.State.Health.Status}}' nexo-db || true)
+
+                      echo "Estado actual: $STATUS"
+
+                      if [ "$STATUS" = "healthy" ]; then
+                        echo "🚀 Postgres listo!"
+                        exit 0
+                      fi
+
+                      sleep 2
+                    done
+
+                    echo "❌ Postgres no se puso healthy a tiempo."
+                    exit 1
                 '''
             }
         }
@@ -76,10 +99,7 @@ pipeline {
                     cd backend
                     npm install
 
-                    echo "⏳ Esperando 10 segundos para que Postgres inicie..."
-                    sleep 10
-
-                    echo "🚀 Ejecutando migraciones (CI)..."
+                    echo "🚀 Ejecutando migraciones..."
                     npm run db:reset:ci
                 '''
             }
@@ -120,4 +140,3 @@ pipeline {
         failure { echo '❌ Error en el pipeline. Revisa los logs.' }
     }
 }
-
