@@ -60,6 +60,16 @@ pipeline {
             }
         }
 
+        stage('Start Database Service') {
+            steps {
+                echo '🐘 Iniciando base de datos con Docker Compose...'
+                sh '''
+                    cd backend
+                    docker compose up -d db
+                '''
+            }
+        }
+
         stage('Database Reset & Migrations') {
             steps {
                 sh '''
@@ -110,3 +120,4 @@ pipeline {
         failure { echo '❌ Error en el pipeline. Revisa los logs.' }
     }
 }
+
