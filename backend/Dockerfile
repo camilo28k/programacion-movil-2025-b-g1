@@ -1,31 +1,49 @@
-# Etapa 1: Build del proyecto NestJS
-FROM node:20-alpine AS build
+# ========================
+# STAGE 1 - Build
+# ========================
+FROM node:20-slim AS build
+
 WORKDIR /app
 
-# 1. Copiar package.json e instalar dependencias
 COPY package*.json ./
+
+# Dependencias necesarias para Prisma
+RUN apt-get update -y && \
+    apt-get install -y openssl libc6 libssl3 libgcc-s1
+
+# Fix conexión NPM
+RUN npm config set fetch-retries 5 \
+    && npm config set fetch-retry-mintimeout 20000 \
+    && npm config set fetch-retry-maxtimeout 120000 \
+    && npm config set strict-ssl false
+
+# Forzar Prisma a usar motores locales
+ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
+ENV PRISMA_CLIENT_ENGINE_TYPE=binary
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+ENV PRISMA_MIGRATION_ENGINE_BINARY=binary
+
+# Instalar dependencias
 RUN npm install
 
-# 2. Copiar TODO el proyecto antes de generar Prisma
+# Copiar código
 COPY . .
 
-# 3. Prisma schema está ahora dentro de ./prisma
+# Generar cliente Prisma sin descargas externas
 RUN npx prisma generate
 
-# 4. Compilar Nest
+# Construir NestJS
 RUN npm run build
 
+# ========================
+# STAGE 2 - Run
+# ========================
+FROM node:20-slim
 
-# Etapa 2: Imagen final
-FROM node:20-alpine
 WORKDIR /app
 
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/prisma ./prisma
-COPY package*.json ./
-COPY secrets ./secrets
+COPY --from=build /app ./
 
 EXPOSE 3000
-CMD ["node", "dist/main.js"]
 
+CMD ["npm", "run", "start:prod"]

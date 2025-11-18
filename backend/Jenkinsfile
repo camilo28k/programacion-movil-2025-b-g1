@@ -1,5 +1,4 @@
 pipeline {
-
     agent any
 
     environment {
@@ -17,20 +16,15 @@ pipeline {
                     branches: [[name: "*/hu-05-dev"]],
                     userRemoteConfigs: [[
                         url: 'https://github.com/camilo28k/programacion-movil-2025-b-g1.git'
-                    ]],
-                    extensions: [
-                        [$class: 'CloneOption', timeout: 30],
-                        [$class: 'CheckoutOption', timeout: 30]
-                    ]
+                    ]]
                 ])
-
                 sh 'cd backend && ls -la'
             }
         }
 
         stage('Load Secrets & Generate .env') {
             steps {
-                echo '🔐 Cargando credenciales desde Jenkins y generando .env...'
+                echo '🔐 Generando archivo .env con credenciales de Jenkins...'
 
                 withCredentials([
                     string(credentialsId: 'pg-user', variable: 'POSTGRES_USER'),
@@ -51,10 +45,7 @@ pipeline {
                         echo "EMAIL_PORT=587" >> .env
                         echo "EMAIL_SECURE=false" >> .env
                         echo "EMAIL_USER=haroldcamilobarreragiraldo3@gmail.com" >> .env
-
-                        # ✅ CAMBIO CORRECTO (ANTES: ${EMAIL_PASS_JENKINS})
                         echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> .env
-
                         echo "EMAIL_FROM_NAME=Nexo Innovación" >> .env
                         echo "EMAIL_FROM_ADDRESS=no-reply@nexo.com" >> .env
 
@@ -63,7 +54,7 @@ pipeline {
 
                         echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB?schema=public" >> .env
 
-                        echo "📝 Archivo .env generado correctamente en backend/"
+                        echo "📝 Archivo .env generado correctamente."
                     '''
                 }
             }
@@ -71,18 +62,22 @@ pipeline {
 
         stage('Database Reset & Migrations') {
             steps {
-                echo '🧹 Reiniciando base de datos y aplicando migraciones...'
                 sh '''
                     cd backend
                     npm install
-                    npm run db:reset
+
+                    echo "⏳ Esperando 10 segundos para que Postgres inicie..."
+                    sleep 10
+
+                    echo "🚀 Ejecutando migraciones (CI)..."
+                    npm run db:reset:ci
                 '''
             }
         }
 
         stage('Build & Push Backend Image') {
             steps {
-                echo '⚙️ Construyendo y subiendo imagen del backend a DockerHub...'
+                echo '🐳 Construyendo imagen del backend...'
 
                 sh '''
                     cd backend
@@ -100,7 +95,7 @@ pipeline {
 
         stage('Deploy Updated Stack') {
             steps {
-                echo '🚀 Desplegando stack actualizado (Postgres + Backend)...'
+                echo '🚀 Desplegando backend + base de datos...'
                 sh '''
                     cd backend
                     docker compose down || true
@@ -111,11 +106,7 @@ pipeline {
     }
 
     post {
-        success {
-            echo '✅ Pipeline completado exitosamente.'
-        }
-        failure {
-            echo '❌ Error en el pipeline. Revisa los logs.'
-        }
+        success { echo '✅ Pipeline completado exitosamente.' }
+        failure { echo '❌ Error en el pipeline. Revisa los logs.' }
     }
 }
