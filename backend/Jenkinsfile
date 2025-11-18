@@ -33,7 +33,6 @@ pipeline {
                     string(credentialsId: 'email-pass', variable: 'EMAIL_PASSWORD'),
                     string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET')
                 ]) {
-
                     sh '''
                         cd backend
 
@@ -52,57 +51,9 @@ pipeline {
                         echo "JWT_SECRET=$JWT_SECRET" >> .env
                         echo "JWT_EXPIRATION_TIME=3600s" >> .env
 
-                        # 🚀 HOST CORRECTO PARA DOCKER → NO localhost
                         echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@nexo-db:5432/$POSTGRES_DB?schema=public" >> .env
                     '''
                 }
-            }
-        }
-
-        stage('Start Database') {
-            steps {
-                echo '🐘 Iniciando base de datos...'
-                sh '''
-                    cd backend
-                    docker compose up -d db
-                '''
-            }
-        }
-
-        stage('Wait for PostgreSQL') {
-            steps {
-                echo '⏳ Esperando a que Postgres esté listo...'
-                sh '''
-                    echo "Esperando que nexo-db esté healthy..."
-
-                    for i in {1..30}; do
-                      STATUS=$(docker inspect --format='{{.State.Health.Status}}' nexo-db || true)
-
-                      echo "Estado actual: $STATUS"
-
-                      if [ "$STATUS" = "healthy" ]; then
-                        echo "🚀 Postgres listo!"
-                        exit 0
-                      fi
-
-                      sleep 2
-                    done
-
-                    echo "❌ Postgres no se puso healthy a tiempo."
-                    exit 1
-                '''
-            }
-        }
-
-        stage('Database Reset & Migrations') {
-            steps {
-                sh '''
-                    cd backend
-                    npm install
-
-                    echo "🚀 Ejecutando migraciones..."
-                    npm run db:reset:ci
-                '''
             }
         }
 
@@ -124,13 +75,27 @@ pipeline {
             }
         }
 
-        stage('Deploy Updated Stack') {
+        stage('Deploy Stack') {
             steps {
-                echo '🚀 Desplegando backend + base de datos...'
+                echo '🚀 Deploy del backend y base de datos...'
                 sh '''
                     cd backend
                     docker compose down || true
                     docker compose up -d --build
+                '''
+            }
+        }
+
+        stage('Run Migrations (AFTER Deploy)') {
+            steps {
+                echo '📌 Ejecutando migraciones en la base ya desplegada...'
+                sh '''
+                    echo "⏳ Esperando que la DB se inicialice..."
+                    sleep 10
+
+                    cd backend
+                    docker exec nexo-backend npx prisma migrate deploy
+                    docker exec nexo-backend npx prisma generate
                 '''
             }
         }
