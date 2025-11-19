@@ -42,8 +42,7 @@ No incluye:
 - IEEE 830-1998 — *IEEE Recommended Practice for Software Requirements Specifications*.  
 - [React Native — Documentación oficial](https://reactnative.dev/docs/getting-started).  
 - [NestJS — Documentación oficial](https://docs.nestjs.com/).  
-- [PostgreSQL — Documentación oficial](https://www.postgresql.org/docs/).  
-- [AWS S3 — Documentación oficial](https://docs.aws.amazon.com/).  
+- [PostgreSQL — Documentación oficial](https://www.postgresql.org/docs/).
 - **Normativa colombiana:** Ley 1581 de 2012 y Decreto 1377 de 2013 (protección de datos personales).  
 
 ### 1.1.5 Visión general del documento
@@ -150,7 +149,6 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
   - Disponibilidad de conectividad a internet para registro, navegación y notificaciones.  
   - Servicio de correo electrónico institucional para verificación de cuentas y recuperación de contraseñas.  
   - Integración con WhatsApp para comunicación entre compradores y emprendedores.  
-  - Servicio en la nube (AWS S3) para almacenamiento de imágenes.  
   - Políticas de TI de la universidad para garantizar seguridad y soporte técnico.
 
 ### 1.3.2 Funciones del sistema (Requisitos Funcionales - RF)
@@ -170,8 +168,7 @@ El sistema provee las siguientes funciones principales, descritas a nivel alto:
 
 - **RNF-P01**: El tiempo de arranque de la aplicación en dispositivos de gama media no debe superar los **3 segundos (p95)**.  
 - **RNF-P02**: El tiempo de respuesta para mostrar el catálogo de productos/servicios no debe superar los **800 ms** en condiciones de red 4G o WiFi estable.  
-- **RNF-P03**: El tiempo de carga de imágenes almacenadas en AWS S3 no debe superar los **1.5 segundos (p95)** por recurso individual.  
-- **RNF-P04**: El flujo de registro y autenticación (incluyendo verificación de token por correo) debe completarse en un máximo de **5 segundos**.  
+- **RNF-P03**: El flujo de registro y autenticación (incluyendo verificación de token por correo) debe completarse en un máximo de **5 segundos**.  
 
 ---
 
@@ -343,7 +340,7 @@ Acciones administrativas de control y calidad.
 
 #### Infraestructura
 - Imágenes alojadas en un servidor público accesible vía HTTP.
-- Base de datos centralizada en **AWS RDS** (PostgreSQL).
+- Base de datos centralizada en **Docker** (PostgreSQL).
 
 #### SDKs y librerías
 - Librerías oficiales de **AWS SDK** para manejo de imágenes.  
@@ -393,8 +390,6 @@ Acciones administrativas de control y calidad.
 - Comunicación app-backend vía **HTTPS**.  
 - Integraciones externas (WhatsApp) no almacenan datos adicionales.
 
-#### Almacenamiento y transferencia de datos
-- Imágenes en **AWS S3** con URLs firmadas.
 
 ---
 
